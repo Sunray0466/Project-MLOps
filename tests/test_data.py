@@ -1,6 +1,6 @@
 from torch.utils.data import Dataset
 
-from {{ cookiecutter.project_name }}.data import MyDataset
+from project.data import MyDataset
 
 
 def test_my_dataset():

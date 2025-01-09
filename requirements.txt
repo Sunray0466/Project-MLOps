@@ -1,4 +1,9 @@
-torch==2.5.1
+invoke==2.2.0
+loguru==0.7.3
+Markdown==3.3.6
+matplotlib==3.10.0
+my_project_name==0.0.0
+pydantic==2.10.4
+scikit_learn==1.6.0
+torch==2.5.1+cu124
 typer==0.15.1
-fastapi==0.115.6
-uvicorn==0.34.0
