@@ -1,5 +1,7 @@
 # Project-MLOps
-Project work for MLOps
+**Final handin: January 24th midnight (11.59PM)**
+
+*insert description*
 
 ## #TODO
 ### Week 1
@@ -53,3 +55,11 @@ Project work for MLOps
 * [ ] If applicable, optimize the performance of your data loading using distributed data loading (M29)
 * [ ] If applicable, optimize the performance of your training pipeline by using distributed training (M30)
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
+
+### Extra
+* [ ] Write some documentation for your application (M32)
+* [ ] Publish the documentation to GitHub Pages (M32)
+* [ ] Revisit your initial project description. Did the project turn out as you wanted?
+* [ ] Create an architectural diagram over your MLOps pipeline
+* [ ] Make sure all group members have an understanding about all parts of the project
+* [ ] Uploaded all your code to GitHub
