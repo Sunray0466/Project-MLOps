@@ -8,7 +8,7 @@
 * [x] Create a git repository (M5)
 * [ ] Make sure that all team members have write access to the GitHub repository (M5)
 * [ ] Create a dedicated environment for you project to keep track of your packages (M2)
-* [ ] Create the initial file structure using cookiecutter with an appropriate template (M6)
+* [x] Create the initial file structure using cookiecutter with an appropriate template (M6)
 * [ ] Fill out the data.py file such that it downloads whatever data you need and preprocesses it (if necessary) (M6)
 * [ ] Add a model to model.py and a training procedure to train.py and get that running (M6)
 * [ ] Remember to fill out the requirements.txt and requirements_dev.txt file with whatever dependencies that you are using (M2+M6)
@@ -56,7 +56,7 @@
 * [ ] If applicable, optimize the performance of your training pipeline by using distributed training (M30)
 * [ ] Play around with quantization, compilation and pruning for you trained models to increase inference speed (M31)
 
-### Extra
+### *wwExtra*
 * [ ] Write some documentation for your application (M32)
 * [ ] Publish the documentation to GitHub Pages (M32)
 * [ ] Revisit your initial project description. Did the project turn out as you wanted?
