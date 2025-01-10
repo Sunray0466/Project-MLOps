@@ -1,8 +1,19 @@
 # Project-MLOps
 **Final handin: January 24th midnight (11.59PM)**
 
-*insert description*
+___
+## Project Description 
 
+### Goal
+The overall goal of the project is to implement, utilize and make use of the tools we will be learning throughout the course. We will build an end-to-end pipeline to solve a real-world machine learning problem using opensource frameworks. The project will be mainly consisted of three parts. In the first part, we will setup an environment for the development, configure the organizational and version controlling aspects of the project. Secondly, we will train a model on a dataset and lastly, we will deploy the model to the cloud to make use of further reproducibility. 
+
+### Data
+The dataset used are the <a href="https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification/data?select=cards.csv">playing cards from Kaggle</a>. There are 53 classes in total with 52 being the standard card set and the last being the joker. The classes have around ~150 images each and are divided into 94% training, 3% validation and 3% testing. 
+
+### Model/framework
+We are planning to use “Hugging Face Transformers” or “PyTorch Image Models (TIMM)” to access and work on pre-trained image classification models. We can also try to incorporate PyTorch Lightning to our workflow to minimize boilerplate code and make it more streamlined. We first plan to use a pre-trained ResNet model with appropriate size. However, we may experiment on Vision transformer (ViT), or ConvNeXt models. 
+
+___
 ## #TODO
 #### Checklist
 * Remember to fill out the requirements.txt and requirements_dev.txt file with whatever dependencies that you are using (M2+M6)
