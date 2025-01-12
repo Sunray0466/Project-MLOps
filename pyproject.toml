@@ -3,20 +3,21 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = {{ cookiecutter.project_name|tojson }}
+name = "mlops_group35"
 version = "0.0.1"
-description = {{ cookiecutter.description|tojson }}
+description = "MLOps project for the course '02476 Machine Learning Operations'"
 authors = [
-  { name = {{ cookiecutter.author_name|tojson }}, email = "your@email.com" },
+  { name = "Mustafa Berkay Akbulut", email = "bakbulut96@gmail.com"},
+  { name = "Özkan Yamaner", email = "abc@gmail.com"},
+  { name = "Sonny Ma", email = "def@gmail.com" }
 ]
-{% if cookiecutter.open_source_license != 'No license file' %}license = { file = "LICENSE" }{% endif %}
 keywords = ["machine learning", "MLOps"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Programming Language :: Python :: 3",
 ]
 readme = "README.md"
-requires-python = ">={{ cookiecutter.python_version }}"
+requires-python = ">=3.8"
 dynamic = ["dependencies", "optional-dependencies"]
 
 [tool.setuptools.dynamic]
