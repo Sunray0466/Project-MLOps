@@ -10,6 +10,7 @@ authors = [
   { name = "Mustafa Berkay Akbulut", email = "bakbulut96@gmail.com" },
   { name = "Özkan Yamaner", email = "abc@gmail.com" },
   { name = "Sonny Ma", email = "son22092000@gmail.com" },
+  { name = "Veroonika Tamm", email = "veroonika.tamm@gmail.com" },
 ]
 
 keywords = ["machine learning", "MLOps"]
