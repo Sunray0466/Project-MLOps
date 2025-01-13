@@ -8,7 +8,7 @@ version = "0.0.1"
 description = "MLOps project for the course '02476 Machine Learning Operations'"
 authors = [
   { name = "Mustafa Berkay Akbulut", email = "bakbulut96@gmail.com" },
-  { name = "Özkan Yamaner", email = "abc@gmail.com" },
+  { name = "Özkan Yamaner", email = "ozkanyamaner@gmail.com" },
   { name = "Sonny Ma", email = "son22092000@gmail.com" },
   { name = "Veroonika Tamm", email = "veroonika.tamm@gmail.com" },
 ]
