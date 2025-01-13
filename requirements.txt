@@ -4,5 +4,6 @@ Markdown==3.3.6
 matplotlib==3.10.0
 pydantic==2.10.5
 scikit_learn==1.6.1
+torch==2.5.1
 torch==2.5.1+cu124
 typer==0.15.1
