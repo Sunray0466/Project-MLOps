@@ -3,14 +3,15 @@ requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "mlops_group35"
+name = "project_mlops"
 version = "0.0.1"
 description = "MLOps project for the course '02476 Machine Learning Operations'"
 authors = [
-  { name = "Mustafa Berkay Akbulut", email = "bakbulut96@gmail.com"},
-  { name = "Özkan Yamaner", email = "abc@gmail.com"},
-  { name = "Sonny Ma", email = "def@gmail.com" }
+  { name = "Mustafa Berkay Akbulut", email = "bakbulut96@gmail.com" },
+  { name = "Özkan Yamaner", email = "abc@gmail.com" },
+  { name = "Sonny Ma", email = "son22092000@gmail.com" },
 ]
+
 keywords = ["machine learning", "MLOps"]
 classifiers = [
   "Development Status :: 3 - Alpha",
@@ -28,6 +29,7 @@ dev = {file = ['requirements_dev.txt']}
 
 [tool.ruff]
 line-length = 120
+select = ["I"]
 
 [tool.coverage.run]
 omit = ["tests/*"]

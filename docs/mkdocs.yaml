@@ -1,5 +1,5 @@
-site_name: {{ cookiecutter.project_name }}
-site_author: {{ cookiecutter.author_name }}
+site_name: project_mlops
+site_author: G35
 docs_dir: source
 
 theme:

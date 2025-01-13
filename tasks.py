@@ -3,8 +3,8 @@ import os
 from invoke import Context, task
 
 WINDOWS = os.name == "nt"
-PROJECT_NAME = "{{ cookiecutter.project_name }}"
-PYTHON_VERSION = "{{ cookiecutter.python_version }}"
+PROJECT_NAME = "project_mlops"
+PYTHON_VERSION = "3.10"
 
 # Setup commands
 @task

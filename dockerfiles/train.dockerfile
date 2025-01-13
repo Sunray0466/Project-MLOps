@@ -1,5 +1,5 @@
 # Base image
-FROM python:{{ cookiecutter.python_version }}-slim AS base
+FROM python:3.10-slim AS base
 
 RUN apt update && \
     apt install --no-install-recommends -y build-essential gcc && \
@@ -14,4 +14,4 @@ COPY pyproject.toml pyproject.toml
 RUN pip install -r requirements.txt --no-cache-dir --verbose
 RUN pip install . --no-deps --no-cache-dir --verbose
 
-ENTRYPOINT ["python", "-u", "src/{{ cookiecutter.project_name }}/train.py"]
+ENTRYPOINT ["python", "-u", "src/project_mlops/train.py"]

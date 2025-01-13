@@ -1,3 +1,3 @@
 ## Documentation
 
-Documentation for {{ cookiecutter.project_name }}
+Documentation for project_mlops
