@@ -1,17 +1,16 @@
 import torch
 import typer
 from data import corrupt_mnist
-from src.project_mlops.model import MyAwesomeModel
+from src.project_mlops.model import ModelConvolution
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
 
 def evaluate(model_checkpoint: str) -> None:
     """Evaluate a trained model."""
-    print("Evaluating like my life depended on it")
     print(model_checkpoint)
 
-    model = MyAwesomeModel().to(DEVICE)
+    model = ModelConvolution().to(DEVICE)
     model.load_state_dict(torch.load(model_checkpoint))
 
     _, test_set = corrupt_mnist()

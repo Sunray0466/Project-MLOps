@@ -1,9 +1,60 @@
-invoke==2.2.0
-loguru==0.7.3
-Markdown==3.3.6
-matplotlib==3.10.0
-pydantic==2.10.5
-scikit_learn==1.6.1
-torch==2.5.1
+# list of all packages used throughout the exercises + project
+
+# s1 - development environment
+python-dotenv
+nbconvert
+torch
+torchvision
+pipreqs
+# s2 - organisation and version control
+typer
+invoke
+cookiecutter
+dvc
+dvc-gdrive
+ruff
+mypy
+# s3 - reproducibility
+hydra-core
+# s4 - debugging and logging
+pytorch-lightning
+wandb
+snakeviz
+torch_tb_profiler
+# s5 - continuous integration
+pre-commit
+pytest
+coverage
+# s6 - the cloud
+google-cloud-storage
+dvc-gs
+# s7 - deployment
+fastapi
+pydantic
+uvicorn
+requests
+httpx
+locust
+# s8 - monitoring
+evidently
+prometheus-fastapi-instrumentator
+# s9 - scalable applications
+ptflops
+transformers
+datasets
+# s10 - extra
+onnxruntime
+scikit-learn
+mkdocs-material
+streamlit
+optuna
+prefect
+neural_compressor
+# other
+loguru
+Markdown
+matplotlib
+scikit_learn
+kaggle
+--find-links https://download.pytorch.org/whl/torch_stable.html
 torch==2.5.1+cu124
-typer==0.15.1

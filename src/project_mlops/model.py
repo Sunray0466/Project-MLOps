@@ -2,13 +2,13 @@ import torch
 from torch import nn
 
 
-class MyAwesomeModel(nn.Module):
+class ModelConvolution(nn.Module):
     """My awesome model."""
 
     def __init__(self) -> None:
         super().__init__()
         self.conv1 = nn.Sequential(
-            nn.Conv2d( 1,  32, 3, 1, 1),
+            nn.Conv2d( 3,  32, 3, 1, 1),
             nn.ReLU(),
             nn.MaxPool2d(2, 2),
             nn.BatchNorm2d(32),
@@ -31,11 +31,11 @@ class MyAwesomeModel(nn.Module):
         self.flat = nn.Flatten()
         
         self.fc = nn.Sequential(
-            nn.Linear((28//2**3)**2*128, 128),
+            nn.Linear((224//2**3)**2*128, 256),
             nn.ReLU(),
-            nn.Linear(128,  64),
+            nn.Linear(256, 128),
             nn.ReLU(),
-            nn.Linear( 64,  10),
+            nn.Linear(128,  53),
             nn.LogSoftmax(dim=1)
         )
 
@@ -49,10 +49,10 @@ class MyAwesomeModel(nn.Module):
         return x
 
 if __name__ == "__main__":
-    model = MyAwesomeModel()
+    model = ModelConvolution()
     print(f"Model architecture: {model}")
     print(f"Number of parameters: {sum(p.numel() for p in model.parameters())}")
 
-    dummy_input = torch.randn(1, 1, 28, 28)
-    output = model(dummy_input)
-    print(f"Output shape: {output.shape}")
+    # dummy_input = torch.randn(1, 1, 224, 224)
+    # output = model(dummy_input)
+    # print(f"Output shape: {output.shape}")
