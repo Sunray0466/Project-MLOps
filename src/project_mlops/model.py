@@ -1,6 +1,6 @@
 import torch
 from torch import nn
-
+from transformers import ResNetForImageClassification
 
 class ModelConvolution(nn.Module):
     """My awesome model."""
@@ -48,11 +48,15 @@ class ModelConvolution(nn.Module):
         x = self.fc(x)
         return x
 
-if __name__ == "__main__":
-    model = ModelConvolution()
-    print(f"Model architecture: {model}")
-    print(f"Number of parameters: {sum(p.numel() for p in model.parameters())}")
+def hugging_face_resnet():
+    model = ResNetForImageClassification.from_pretrained("microsoft/resnet-50", num_labels=53, ignore_mismatched_sizes=True)
+    return model
 
+if __name__ == "__main__":
+    # model = ModelConvolution()
+    # print(f"Model architecture: {model}")
+    # print(f"Number of parameters: {sum(p.numel() for p in model.parameters())}")
+    hugging_face_resnet()
     # dummy_input = torch.randn(1, 1, 224, 224)
     # output = model(dummy_input)
     # print(f"Output shape: {output.shape}")
