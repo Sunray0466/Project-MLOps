@@ -1,16 +1,21 @@
 import torch
 from torchvision.io import read_image as img2torch
 # import typer
+import os
+os.environ['KAGGLE_USERNAME'] = "<your_kaggle_user_name>"
+os.environ['KAGGLE_KEY'] = "<your_kaggle_api_token>"
 import kaggle as kg
 import glob
-import os
+
+
+
 
 def fetch_kaggle(forced: bool=False) -> None:
     """Download data from kaggle and save it to raw directory"""
     kaggle_url = "gpiosenka/cards-image-datasetclassification"
     raw_dir    = "data/raw/cards-dataset"
     print("In order to download with kaggle.api, it requires kaggle authentication.\n  See this for HowTo: https://github.com/Kaggle/kaggle-api/blob/main/docs/README.md#api-credentials")
-    if len(glob.glob(+"**/*.*")) > 0 and not forced:
+    if len(glob.glob(raw_dir+"**/*.*")) > 0 and not forced:
         print("Directory already exist! Aborting download.\n  Enable 'forced' to still proceed with download!")
         return
     # download
@@ -72,7 +77,7 @@ def playing_cards(project_dir = "") -> tuple[torch.utils.data.Dataset, torch.uti
 
 if __name__ == "__main__":
     fetch_kaggle()
-    # preprocess_data()
+    preprocess_data()
     # typer.run(fetch_kaggle)
     
     # typer.run(preprocess_data) # python .\src\project\data.py .\data\raw\corruptmnist .\data\processed\corruptmnist

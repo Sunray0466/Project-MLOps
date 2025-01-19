@@ -56,5 +56,5 @@ Markdown
 matplotlib
 scikit_learn
 kaggle
---find-links https://download.pytorch.org/whl/torch_stable.html
-torch==2.5.1+cu124
+#--find-links https://download.pytorch.org/whl/torch_stable.html
+#torch==2.5.1+cu124

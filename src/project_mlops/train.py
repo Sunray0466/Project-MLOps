@@ -22,6 +22,7 @@ def train(cfg) -> None:
     log.info(f"{batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
     
     # model/data
+    print(DEVICE)
     torch.manual_seed(seed)
     model = ModelConvolution().to(DEVICE)
     train_set, valid_set, _ = playing_cards(project_dir)
