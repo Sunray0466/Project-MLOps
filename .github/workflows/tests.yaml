@@ -33,6 +33,10 @@ jobs:
           pip install -r requirements.txt
           pip list
 
+      - name: Ruff check and format
+        run: |
+          ruff check .
+          ruff format .
       - name: Download Kaggle files
         env:
           KAGGLE_USERNAME: tedorabothetechnext
