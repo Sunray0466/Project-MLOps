@@ -61,7 +61,8 @@ def preprocess_data() -> None:
         torch.save(target_list, f"{processed_dir}/{data}_target.pt")
     print("Done preprocessing")
 
-def playing_cards(project_dir = "") -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
+def playing_cards() -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
+    project_dir = os.getcwd()
     """Return train and test datasets for playing-cards dataset."""
     train_images = torch.load(f"{project_dir}/data/processed/cards-dataset/train_images.pt", weights_only=True)
     train_target = torch.load(f"{project_dir}/data/processed/cards-dataset/train_target.pt", weights_only=True)
