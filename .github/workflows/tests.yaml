@@ -13,8 +13,8 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: ["ubuntu-latest", "windows-latest", "macos-latest"]
-        python-version: ["3.12", "3.11"]
+        operating-system: ["macos-latest"]
+        python-version: ["3.11"]
 
     steps:
       - name: Checkout code
@@ -33,8 +33,21 @@ jobs:
           pip install -r requirements.txt
           pip list
 
+      - name: Ruff check and format
+        run: |
+          ruff check .
+          ruff format .
+      - name: Download Kaggle files
+        env:
+          KAGGLE_USERNAME: tedorabothetechnext
+          KAGGLE_KEY: 7c2a11853a26b4bd6f82151ad9eafd01
+        run: |
+          python src/project_mlops/data.py
+
 
       - name: Run tests & coverage
+        env:
+          PYTHONPATH: /Users/runner/work/Project-MLOps/Project-MLOps/src
         run: |
           coverage run -m pytest tests/
           coverage report -m
