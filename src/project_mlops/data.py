@@ -2,8 +2,8 @@ import torch
 from torchvision.io import read_image as img2torch
 # import typer
 import os
-os.environ['KAGGLE_USERNAME'] = "<your_kaggle_user_name>"
-os.environ['KAGGLE_KEY'] = "<your_kaggle_api_token>"
+os.environ['KAGGLE_USERNAME'] = "berkayakbulut"
+os.environ['KAGGLE_KEY'] = "86952cf72fda508a8877018b9e5e739e"
 import kaggle as kg
 import glob
 
@@ -63,12 +63,20 @@ def preprocess_data() -> None:
 
 def playing_cards(project_dir = "") -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
     """Return train and test datasets for playing-cards dataset."""
-    train_images = torch.load(f"{project_dir}/data/processed/cards-dataset/train_images.pt", weights_only=True)
-    train_target = torch.load(f"{project_dir}/data/processed/cards-dataset/train_target.pt", weights_only=True)
-    valid_images = torch.load(f"{project_dir}/data/processed/cards-dataset/valid_images.pt", weights_only=True)
-    valid_target = torch.load(f"{project_dir}/data/processed/cards-dataset/valid_target.pt", weights_only=True)
-    test_images  = torch.load(f"{project_dir}/data/processed/cards-dataset/test_images.pt",  weights_only=True)
-    test_target  = torch.load(f"{project_dir}/data/processed/cards-dataset/test_target.pt",  weights_only=True)
+    # train_images = torch.load(f"{project_dir}/data/processed/cards-dataset/train_images.pt", weights_only=True)
+    # train_target = torch.load(f"{project_dir}/data/processed/cards-dataset/train_target.pt", weights_only=True)
+    # valid_images = torch.load(f"{project_dir}/data/processed/cards-dataset/valid_images.pt", weights_only=True)
+    # valid_target = torch.load(f"{project_dir}/data/processed/cards-dataset/valid_target.pt", weights_only=True)
+    # test_images  = torch.load(f"{project_dir}/data/processed/cards-dataset/test_images.pt",  weights_only=True)
+    # test_target  = torch.load(f"{project_dir}/data/processed/cards-dataset/test_target.pt",  weights_only=True)
+    
+    #for cloud purposes
+    train_images = torch.load(f"/gcs/data/processed/cards-dataset/train_images.pt", weights_only=True)
+    train_target = torch.load(f"/gcs/data/processed/cards-dataset/train_target.pt", weights_only=True)
+    valid_images = torch.load(f"/gcs/data/processed/cards-dataset/valid_images.pt", weights_only=True)
+    valid_target = torch.load(f"/gcs/data/processed/cards-dataset/valid_target.pt", weights_only=True)
+    test_images  = torch.load(f"/gcs/data/processed/cards-dataset/test_images.pt",  weights_only=True)
+    test_target  = torch.load(f"/gcs/data/processed/cards-dataset/test_target.pt",  weights_only=True)
 
     train_set = torch.utils.data.TensorDataset(train_images, train_target)
     valid_set = torch.utils.data.TensorDataset(valid_images, valid_target)
