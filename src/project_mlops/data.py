@@ -61,8 +61,7 @@ def preprocess_data() -> None:
         torch.save(target_list, f"{processed_dir}/{data}_target.pt")
     print("Done preprocessing")
 
-def playing_cards() -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
-    project_dir = os.getcwd()
+def playing_cards(project_dir = "") -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
     """Return train and test datasets for playing-cards dataset."""
     # train_images = torch.load(f"{project_dir}/data/processed/cards-dataset/train_images.pt", weights_only=True)
     # train_target = torch.load(f"{project_dir}/data/processed/cards-dataset/train_target.pt", weights_only=True)
@@ -70,7 +69,7 @@ def playing_cards() -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]
     # valid_target = torch.load(f"{project_dir}/data/processed/cards-dataset/valid_target.pt", weights_only=True)
     # test_images  = torch.load(f"{project_dir}/data/processed/cards-dataset/test_images.pt",  weights_only=True)
     # test_target  = torch.load(f"{project_dir}/data/processed/cards-dataset/test_target.pt",  weights_only=True)
-    
+
     #for cloud purposes
     train_images = torch.load(f"/gcs/data/processed/cards-dataset/train_images.pt", weights_only=True)
     train_target = torch.load(f"/gcs/data/processed/cards-dataset/train_target.pt", weights_only=True)
@@ -78,6 +77,7 @@ def playing_cards() -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]
     valid_target = torch.load(f"/gcs/data/processed/cards-dataset/valid_target.pt", weights_only=True)
     test_images  = torch.load(f"/gcs/data/processed/cards-dataset/test_images.pt",  weights_only=True)
     test_target  = torch.load(f"/gcs/data/processed/cards-dataset/test_target.pt",  weights_only=True)
+    
 
     train_set = torch.utils.data.TensorDataset(train_images, train_target)
     valid_set = torch.utils.data.TensorDataset(valid_images, valid_target)
