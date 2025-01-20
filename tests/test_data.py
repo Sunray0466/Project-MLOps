@@ -3,6 +3,7 @@ import torch
 
 from project_mlops.data import playing_cards
 
+
 def test_playing_cards():
     # Load datasets
     train_set, valid_set, test_set = playing_cards()
@@ -28,4 +29,3 @@ def test_playing_cards():
     assert len(test_targets) <= 53, "Test dataset should not have more than 53 classes"
 
     print("All tests passed!")
-

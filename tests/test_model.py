@@ -3,6 +3,7 @@ from torch import nn
 from transformers import ResNetForImageClassification
 from project_mlops.model import ModelConvolution, hugging_face_resnet
 
+
 def test_model_initialization():
     """Test if the models can be initialized without errors."""
     model = ModelConvolution()
@@ -45,7 +46,7 @@ def test_dropout_layers():
 def test_resnet_pretrained_weights():
     """Test if the Hugging Face ResNet model loads pretrained weights correctly."""
     resnet_model = hugging_face_resnet()
-    assert hasattr(resnet_model, 'state_dict'), "Hugging Face ResNet should have a state_dict method."
+    assert hasattr(resnet_model, "state_dict"), "Hugging Face ResNet should have a state_dict method."
     state_dict = resnet_model.state_dict()
     assert len(state_dict) > 0, "State dict should not be empty."
 
