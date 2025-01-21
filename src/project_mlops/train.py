@@ -1,11 +1,13 @@
 import matplotlib.pyplot as plt
 import torch
 import hydra
+import wandb
 import os
 from data import playing_cards
 from model import *
 import logging
 from datetime import datetime
+from sklearn.metrics import RocCurveDisplay, accuracy_score, f1_score, precision_score, recall_score
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
@@ -21,6 +23,11 @@ def train(cfg) -> None:
     project_dir = hydra.utils.get_original_cwd()
     log = logging.getLogger(__name__)
     log.info(f"{batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
+
+    run = wandb.init(
+        project="playing_cards",
+        config={"lr": lr, "batch_size": batch_size, "epochs": epochs},
+    )
     
     # model/data
     log.info(f"Using Device: {DEVICE}")
@@ -38,6 +45,10 @@ def train(cfg) -> None:
     statistics = {"train_loss": [], "train_accuracy": [],"valid_loss": [], "valid_accuracy": []}
     for epoch in range(epochs):
         model.train()
+
+        preds, targets = [], []
+
+        #Training loop
         for i, (img, target) in enumerate(train_dataloader):
             img, target = img.to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
@@ -49,6 +60,12 @@ def train(cfg) -> None:
             statistics["train_loss"].append(loss.item())
             accuracy = (y_pred.argmax(dim=1) == target).float().mean().item()
             statistics["train_accuracy"].append(accuracy)
+
+            wandb.log({"train_loss": loss.item(), "train_accuracy": accuracy})
+
+
+            preds.append(y_pred.detach().cpu())
+            targets.append(target.detach().cpu())
 
             if (i+1) % 100 == 0:
                 model.eval()
@@ -68,7 +85,41 @@ def train(cfg) -> None:
                     statistics["valid_loss"].append(valid_loss)
                     statistics["valid_accuracy"].append(valid_accuracy)
                 log.info(f"Epoch {epoch:>2}, iter {i+1:>4}, train-loss: {loss.item():.4f}, valid-loss: {valid_loss:.4f}, valid-accuracy: {valid_accuracy*100:.2f}%")
+                
+                # add a plot of the input images
+                images = wandb.Image(img[:5].detach().cpu(), caption="Input images")
+                wandb.log({"images": images})
+
+                # add a plot of histogram of the gradients
+                grads = torch.cat([p.grad.flatten() for p in model.parameters() if p.grad is not None], 0)
+                wandb.log({"gradients": wandb.Histogram(grads.cpu())})
+                
                 model.train()
+
+
+        # add a custom matplotlib plot of the ROC curves
+        preds = torch.cat(preds, 0)
+        targets = torch.cat(targets, 0)
+
+        for class_id in range(10):
+            one_hot = torch.zeros_like(targets)
+            one_hot[targets == class_id] = 1
+            _ = RocCurveDisplay.from_predictions(
+                one_hot.cpu().numpy(),
+                preds[:, class_id].cpu().numpy(),
+                name=f"ROC curve for {class_id}",
+                plot_chance_level=(class_id == 2),
+            )
+
+        # alternatively use wandb.log({"roc": wandb.Image(plt)}
+        wandb.log({"roc": wandb.Image(plt)})
+        plt.close()  # close the plot to avoid memory leaks and overlapping figures
+
+
+    final_accuracy = accuracy_score(targets, preds.argmax(dim=1))
+    final_precision = precision_score(targets, preds.argmax(dim=1), average="weighted")
+    final_recall = recall_score(targets, preds.argmax(dim=1), average="weighted")
+    final_f1 = f1_score(targets, preds.argmax(dim=1), average="weighted")
 
     log.info("Training completed")
     #prefix = hydra.utils.get_original_cwd().split("outputs\\")[-1].replace("\\","_") # yyyy-mm-dd_hh-mm-ss
@@ -79,6 +130,16 @@ def train(cfg) -> None:
     prefix = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
 
     torch.save(model.state_dict(), f"{project_dir}/models/model_{prefix}.pth") # model_{prefix}.pth
+    
+    artifact = wandb.Artifact(
+        name="playing_cards_model",
+        type="model",
+        description="A model trained to classify playing cards.",
+        metadata={"accuracy": final_accuracy, "precision": final_precision, "recall": final_recall, "f1": final_f1},
+    )
+    artifact.add_file(f"{project_dir}/models/model_{prefix}.pth")
+    run.log_artifact(artifact)
+    
     fig, axs = plt.subplots(2, 2, figsize=(15, 5))
     axs = axs.flat
     axs[0].plot(statistics["train_loss"])
@@ -93,6 +154,7 @@ def train(cfg) -> None:
     print(f" Model saved to: {project_dir}/models/model_{prefix}.pth")
     print(f"Figure saved to: {project_dir}/reports/figures/training_{prefix}.png")
 
+    
 
 if __name__ == "__main__":
     train()
