@@ -5,6 +5,7 @@ import os
 from data import playing_cards
 from model import *
 import logging
+from datetime import datetime
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
@@ -22,10 +23,10 @@ def train(cfg) -> None:
     log.info(f"{batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
     
     # model/data
-    print(DEVICE)
+    log.info(f"Using Device: {DEVICE}")
     torch.manual_seed(seed)
-    model = ModelConvolution().to(DEVICE)
-    train_set, valid_set, _ = playing_cards(project_dir)
+    model = PretrainedResNet().to(DEVICE)
+    train_set, valid_set, _ = playing_cards()
     
     train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=True)
     valid_dataloader = torch.utils.data.DataLoader(valid_set, batch_size=batch_size, shuffle=True)
@@ -70,7 +71,13 @@ def train(cfg) -> None:
                 model.train()
 
     log.info("Training completed")
-    prefix = os.getcwd().split("outputs\\")[-1].replace("\\","_") # yyyy-mm-dd_hh-mm-ss
+    #prefix = hydra.utils.get_original_cwd().split("outputs\\")[-1].replace("\\","_") # yyyy-mm-dd_hh-mm-ss
+    # Get the current date and time
+    current_datetime = datetime.now()
+
+    # Format the date and time as a string
+    prefix = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
+
     torch.save(model.state_dict(), f"{project_dir}/models/model_{prefix}.pth") # model_{prefix}.pth
     fig, axs = plt.subplots(2, 2, figsize=(15, 5))
     axs = axs.flat

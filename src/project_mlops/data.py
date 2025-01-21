@@ -2,10 +2,11 @@ import torch
 from torchvision.io import read_image as img2torch
 # import typer
 import os
-os.environ['KAGGLE_USERNAME'] = "<your_kaggle_user_name>"
-os.environ['KAGGLE_KEY'] = "<your_kaggle_api_token>"
+os.environ['KAGGLE_USERNAME'] = "ozkanyamaner"
+os.environ['KAGGLE_KEY'] = 	"9a1e8991f9dd601d8353f63e44f09998"
 import kaggle as kg
 import glob
+import hydra
 
 
 
@@ -62,7 +63,9 @@ def preprocess_data() -> None:
     print("Done preprocessing")
 
 def playing_cards() -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
-    project_dir = os.getcwd()
+    #project_dir = os.getcwd()
+    project_dir = hydra.utils.get_original_cwd()
+    #print(project_dir)
     """Return train and test datasets for playing-cards dataset."""
     train_images = torch.load(f"{project_dir}/data/processed/cards-dataset/train_images.pt", weights_only=True)
     train_target = torch.load(f"{project_dir}/data/processed/cards-dataset/train_target.pt", weights_only=True)

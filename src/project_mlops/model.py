@@ -1,62 +1,39 @@
 import torch
 from torch import nn
-from transformers import ResNetForImageClassification
+import timm
 
-class ModelConvolution(nn.Module):
+class PretrainedResNet(nn.Module):
     """My awesome model."""
 
-    def __init__(self) -> None:
-        super().__init__()
-        self.conv1 = nn.Sequential(
-            nn.Conv2d( 3,  32, 3, 1, 1),
-            nn.ReLU(),
-            nn.MaxPool2d(2, 2),
-            nn.BatchNorm2d(32),
-            nn.Dropout(p=0.3),
-        )
-        self.conv2 = nn.Sequential(
-            nn.Conv2d(32,  64, 3, 1, 1),
-            nn.ReLU(),
-            nn.MaxPool2d(2, 2),
-            nn.BatchNorm2d(64),
-            nn.Dropout(p=0.3),
-        )
-        self.conv3 = nn.Sequential(
-            nn.Conv2d(64, 128, 3, 1, 1),
-            nn.ReLU(),
-            nn.MaxPool2d(2, 2),
-            nn.BatchNorm2d(128),
-            nn.Dropout(p=0.3),
-        )
-        self.flat = nn.Flatten()
-        
-        self.fc = nn.Sequential(
-            nn.Linear((224//2**3)**2*128, 256),
-            nn.ReLU(),
-            nn.Linear(256, 128),
-            nn.ReLU(),
-            nn.Linear(128,  53),
-            nn.LogSoftmax(dim=1)
-        )
+    def __init__(self, num_classes = 53) -> None:
+        super(PretrainedResNet, self).__init__()
+        self.model = timm.create_model('resnet18', pretrained=True, num_classes=num_classes)
 
-    def forward(self, x):
-        x = self.conv1(x)
-        x = self.conv2(x)
-        x = self.conv3(x)
-        
-        x = self.flat(x)
-        x = self.fc(x)
-        return x
+        # Freeze earlier layers (layer1 and layer2)
+        for param in self.model.layer1.parameters():
+            param.requires_grad = False
+        for param in self.model.layer2.parameters():
+            param.requires_grad = False
 
-def hugging_face_resnet():
-    model = ResNetForImageClassification.from_pretrained("microsoft/resnet-50", num_labels=53, ignore_mismatched_sizes=True)
-    return model
+        # Fine-tune layer3, layer4, and fc layer
+        for param in self.model.layer3.parameters():
+            param.requires_grad = True
+        for param in self.model.layer4.parameters():
+            param.requires_grad = True
+
+        # Change the number of output classes
+        self.model.fc = nn.Linear(self.model.fc.in_features, num_classes)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass."""
+        return self.model(x)
+
 
 if __name__ == "__main__":
-    # model = ModelConvolution()
-    # print(f"Model architecture: {model}")
-    # print(f"Number of parameters: {sum(p.numel() for p in model.parameters())}")
-    hugging_face_resnet()
-    # dummy_input = torch.randn(1, 1, 224, 224)
-    # output = model(dummy_input)
-    # print(f"Output shape: {output.shape}")
+    model = PretrainedResNet()
+    print(f"Model architecture: {model}")
+    print(f"Number of parameters: {sum(p.numel() for p in model.parameters())}")
+
+    dummy_input = torch.randn(1, 1, 28, 28)
+    output = model(dummy_input)
+    print(f"Output shape: {output.shape}")
