@@ -1,13 +1,14 @@
-import torch
-from torchvision.io import read_image as img2torch
-
 # import typer
 import os
 
+import torch
+from torchvision.io import read_image as img2torch
+
 os.environ["KAGGLE_USERNAME"] = "berkayakbulut"
 os.environ["KAGGLE_KEY"] = "86952cf72fda508a8877018b9e5e739e"
-import kaggle as kg
 import glob
+
+import kaggle as kg
 
 
 def fetch_kaggle(forced: bool = False) -> None:
