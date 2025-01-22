@@ -1,7 +1,7 @@
 import torch
 from torch.utils.data import Dataset
 
-from project_mlops.data import playing_cards
+from project_mlops.data import fetch_kaggle, normalize, playing_cards
 
 
 def test_playing_cards():

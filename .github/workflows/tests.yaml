@@ -37,10 +37,11 @@ jobs:
         run: |
           ruff check .
           ruff format .
+
       - name: Download Kaggle files
         env:
-          KAGGLE_USERNAME: tedorabothetechnext
-          KAGGLE_KEY: 7c2a11853a26b4bd6f82151ad9eafd01
+          KAGGLE_USERNAME: berkayakbulut
+          KAGGLE_KEY: 86952cf72fda508a8877018b9e5e739e
         run: |
           python src/project_mlops/data.py
 
@@ -48,6 +49,7 @@ jobs:
       - name: Run tests & coverage
         env:
           PYTHONPATH: /Users/runner/work/Project-MLOps/Project-MLOps/src
+          KAGGLE_USERNAME: berkayakbulut
+          KAGGLE_KEY: 86952cf72fda508a8877018b9e5e739e
         run: |
           coverage run -m pytest tests/
-          coverage report -m

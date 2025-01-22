@@ -1,16 +1,16 @@
 # Project-MLOps
 **Final handin: January 24th midnight (11.59PM)**
 ___
-## Project Description 
+## Project Description
 
 ### Goal
-The overall goal of the project is to implement, utilize and make use of the tools we will be learning throughout the course. We will build an end-to-end pipeline to solve a real-world machine learning problem using opensource frameworks. The project will be mainly consisted of three parts. In the first part, we will setup an environment for the development, configure the organizational and version controlling aspects of the project. Secondly, we will train a model on a dataset and lastly, we will deploy the model to the cloud to make use of further reproducibility. 
+The overall goal of the project is to implement, utilize and make use of the tools we will be learning throughout the course. We will build an end-to-end pipeline to solve a real-world machine learning problem using opensource frameworks. The project will be mainly consisted of three parts. In the first part, we will setup an environment for the development, configure the organizational and version controlling aspects of the project. Secondly, we will train a model on a dataset and lastly, we will deploy the model to the cloud to make use of further reproducibility.
 
 ### Data
-The dataset used are the <a href="https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification/data?select=cards.csv">playing cards from Kaggle</a>. There are 53 classes in total with 52 being the standard card set and the last being the joker. The classes have around ~150 images each and are divided into 94% training, 3% validation and 3% testing. 
+The dataset used are the <a href="https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification/data?select=cards.csv">playing cards from Kaggle</a>. There are 53 classes in total with 52 being the standard card set and the last being the joker. The classes have around ~150 images each and are divided into 94% training, 3% validation and 3% testing.
 
 ### Model/framework
-We are planning to use “Hugging Face Transformers” or “PyTorch Image Models (TIMM)” to access and work on pre-trained image classification models. We can also try to incorporate PyTorch Lightning to our workflow to minimize boilerplate code and make it more streamlined. We first plan to use a pre-trained ResNet model with appropriate size. However, we may experiment on Vision transformer (ViT), or ConvNeXt models. 
+We are planning to use “Hugging Face Transformers” or “PyTorch Image Models (TIMM)” to access and work on pre-trained image classification models. We can also try to incorporate PyTorch Lightning to our workflow to minimize boilerplate code and make it more streamlined. We first plan to use a pre-trained ResNet model with appropriate size. However, we may experiment on Vision transformer (ViT), or ConvNeXt models.
 
 ___
 ## #TODO
@@ -45,9 +45,9 @@ ___
 * [x] (Veroonika) Get some continuous integration running on the GitHub repository (M17)
 * [x] (Veroonika) Add caching and multi-os/python/pytorch testing to your continuous integration (M17)
 * [x] (Veroonika) Add a linting step to your continuous integration (M17)
-* [ ] (Veroonika) Add pre-commit hooks to your version control setup (M18)
-* [ ] - Add a continues workflow that triggers when data changes (M19)
-* [ ] (Veroonika) Add a continues workflow that triggers when changes to the model registry is made (M19)
+* [x] (Veroonika) Add pre-commit hooks to your version control setup (M18)
+* [x] - Add a continues workflow that triggers when data changes (M19)
+* [x] (Veroonika) Add a continues workflow that triggers when changes to the model registry is made (M19)
 * [x] (Mustafa) Create a data storage in GCP Bucket for your data and link this with your data version control setup (M21)
 * [x] (Mustafa) Create a trigger workflow for automatically building your docker images (M21)
 * [x] (Mustafa) Get your model training in GCP using either the Engine or Vertex AI (M21)
@@ -127,3 +127,12 @@ The directory structure of the project looks like this:
 Created using [mlops_template](https://github.com/SkafteNicki/mlops_template),
 a [cookiecutter template](https://github.com/cookiecutter/cookiecutter) for getting
 started with Machine Learning Operations (MLOps).
+
+# How to run tests
+
+To run the tests you must point PYTHONPATH to the project source folder
+```
+export PYTHONPATH=<path-to-project>/Project-MLOps/src
+
+pytest tests/test_data.py
+```
