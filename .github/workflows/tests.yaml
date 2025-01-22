@@ -48,6 +48,7 @@ jobs:
       - name: Run tests & coverage
         env:
           PYTHONPATH: /Users/runner/work/Project-MLOps/Project-MLOps/src
+          KAGGLE_USERNAME: berkayakbulut
+          KAGGLE_KEY: 86952cf72fda508a8877018b9e5e739e
         run: |
           coverage run -m pytest tests/
-          coverage report -m

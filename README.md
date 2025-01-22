@@ -127,3 +127,12 @@ The directory structure of the project looks like this:
 Created using [mlops_template](https://github.com/SkafteNicki/mlops_template),
 a [cookiecutter template](https://github.com/cookiecutter/cookiecutter) for getting
 started with Machine Learning Operations (MLOps).
+
+# How to run tests 
+
+To run the tests you must point PYTHONPATH to the project source folder
+```
+export PYTHONPATH=<path-to-project>/Project-MLOps/src
+
+pytest tests/test_data.py
+```
