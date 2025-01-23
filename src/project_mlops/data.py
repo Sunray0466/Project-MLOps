@@ -2,14 +2,11 @@
 import glob
 import os
 
-import torch
-import numpy as np
-from torchvision.io import read_image as img2torch
-import utils
-
-os.environ["KAGGLE_USERNAME"] = "KAGGLE_API_USERNAME"#"berkayakbulut"
-os.environ["KAGGLE_KEY"] = "KAGGLE_API_KEY"#"86952cf72fda508a8877018b9e5e739e"
 import kaggle as kg
+import numpy as np
+import torch
+import utils
+from torchvision.io import read_image as img2torch
 
 
 def fetch_kaggle(forced: bool = False) -> None:
@@ -52,7 +49,7 @@ def preprocess_data() -> None:
     idx2targets = dict(enumerate(targets_sort))
     targets2idx = dict(map(reversed, idx2targets.items()))
     torch.save(idx2targets, f"{processed_dir}/label_converter.pt")
-    np.save(f"{processed_dir}/label_converter.npy",idx2targets)
+    np.save(f"{processed_dir}/label_converter.npy", idx2targets)
 
     # preprocess data
     for data in ["train", "valid", "test"]:
@@ -70,10 +67,17 @@ def preprocess_data() -> None:
     print("Done preprocessing")
 
 
-def playing_cards(project_dir = None) -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
+def playing_cards(project_dir=None) -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
     # Get playing card dataset
     if not project_dir:
         project_dir = utils.get_project_dir()
+    # if host_location == "google_cloud":
+    #     project_dir = "/gcs/dtumlops-bucket-group35"
+    # elif host_location == "github":
+    #     project_dir = os.getcwd()
+    # else:
+    #     raise Exception(f"provided host_location: {host_location} is not one of ['google_cloud', 'github']")
+
     """Return train and test datasets for playing-cards dataset."""
     train_images = torch.load(f"{project_dir}/data/processed/cards-dataset/train_images.pt", weights_only=True)
     train_target = torch.load(f"{project_dir}/data/processed/cards-dataset/train_target.pt", weights_only=True)

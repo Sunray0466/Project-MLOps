@@ -2,11 +2,12 @@ import os
 
 import pandas as pd
 import requests
-import streamlit as st
+
 # from google.cloud import run_v2
 import streamlit as st
 
-@st.cache_resource  
+
+@st.cache_resource
 def get_backend_url():
     """Get the URL of the backend service."""
     parent = "projects/mlops-448220/locations/europe-west1"

@@ -3,6 +3,7 @@ import torch
 from torch import nn
 from transformers import ResNetForImageClassification
 
+
 class CNN(nn.Module):
     """My awesome model."""
 
@@ -63,6 +64,7 @@ def HuggingfaceResnet(num_classes=53):
     model.classifier.append(nn.Linear(1000, num_classes))
     return model
 
+
 def TimmResNet(num_classes=53):
     model = timm.create_model("resnet18", pretrained=True, num_classes=num_classes)
     # Freeze earlier layers (layer1 and layer2)
@@ -85,10 +87,10 @@ def model_list(model_type: str = "cnn"):
     "Returns given model as well as a function to extract the model prediction"
     assert model_type == model_type.lower(), "Error: model type is not lowercase!"
     model_options = {
-        "cnn": (CNN, lambda x: x), 
+        "cnn": (CNN, lambda x: x),
         "huggingresnet": (HuggingfaceResnet, lambda x: x.logits),
         "timmresnet": (TimmResNet, lambda x: x),
-        }
+    }
     # Model type check
     str_sep = lambda x: ("\n\t- " + str(x))
     if model_type not in model_options:

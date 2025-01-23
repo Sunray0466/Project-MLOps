@@ -7,16 +7,16 @@ from datetime import datetime
 
 import hydra
 import matplotlib.pyplot as plt
+import omegaconf
 import torch
-from model import model_list
 import typer
+import utils
 from loguru import logger as log
+from model import model_list
 from sklearn.metrics import RocCurveDisplay, accuracy_score, f1_score, precision_score, recall_score
 
 import wandb
 from data import playing_cards
-import utils
-import omegaconf
 
 # Replace underscores with dashes in CLI arguments
 sys.argv = [arg.replace("_", "-") if "--" in arg else arg for arg in sys.argv]
@@ -27,18 +27,16 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.ba
 def train(cfg) -> None:
     """Train a model on playing cards."""
     # var
-    model_type  = cfg.model
-    batch_size  = cfg.batch_size
-    lr          = cfg.get("lr", cfg.default[model_type].lr)
-    epochs      = cfg.epochs
-    seed        = cfg.seed
-    project_dir = utils.get_project_dir() # hydra.utils.get_original_cwd()
-    
+    model_type = cfg.model
+    batch_size = cfg.batch_size
+    lr = cfg.get("lr", cfg.default[model_type].lr)
+    epochs = cfg.epochs
+    seed = cfg.seed
+    project_dir = utils.get_project_dir()  # hydra.utils.get_original_cwd()
+
     log = logging.getLogger(__name__)
     log.info(f"{model_type=}, {batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
-    wandb.config = omegaconf.OmegaConf.to_container(
-        cfg, resolve=True, throw_on_missing=True
-    )
+    wandb.config = omegaconf.OmegaConf.to_container(cfg, resolve=True, throw_on_missing=True)
     run = wandb.init(project="playing_cards", settings=wandb.Settings(start_method="thread"))
 
     # model/data
@@ -112,9 +110,9 @@ def train(cfg) -> None:
         # add a custom matplotlib plot of the ROC curves
         preds = torch.cat(preds, 0)
         targets = torch.cat(targets, 0)
-        fig,axes = plt.subplots(4,13, figsize=(24,18))
+        fig, axes = plt.subplots(4, 13, figsize=(24, 18))
         axes = list(axes.flat)
-        axes.append(fig.add_subplot(5,6,1))
+        axes.append(fig.add_subplot(5, 6, 1))
 
         for class_id in range(53):
             one_hot = torch.zeros_like(targets)
@@ -124,10 +122,10 @@ def train(cfg) -> None:
                 preds[:, class_id].cpu().numpy(),
                 name=f"ROC curve for {class_id}",
                 plot_chance_level=(class_id == 2),
-                ax=axes[class_id]
+                ax=axes[class_id],
             )
             axes[class_id].axis("off")
-        
+
         # alternatively use wandb.log({"roc": wandb.Image(plt)}
         wandb.log({"roc": wandb.Image(plt)})
         plt.close()  # close the plot to avoid memory leaks and overlapping figures
@@ -154,8 +152,7 @@ def train(cfg) -> None:
     )
     artifact.add_file(model_save_path)
     run.log_artifact(artifact)
-    
-    
+
     wandb.log({"valid_loss": statistics["valid_loss"], "valid_accuracy": statistics["valid_accuracy"]})
 
     fig, axs = plt.subplots(2, 2, figsize=(15, 5))
@@ -168,7 +165,7 @@ def train(cfg) -> None:
     axs[1].set_title("Train accuracy")
     axs[2].set_title("Valid loss")
     axs[3].set_title("Valid accuracy")
-    fig.savefig(score_save_path) # training_{prefix}.pth
+    fig.savefig(score_save_path)  # training_{prefix}.pth
     print(f"      Model saved to: {model_save_path}")
     print(f"Performance saved to: {score_save_path}")
 
@@ -176,4 +173,3 @@ def train(cfg) -> None:
 if __name__ == "__main__":
     train()
     # typer.run(train)
-    
