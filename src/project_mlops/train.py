@@ -23,7 +23,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.ba
 
 
 # @hydra.main(config_name="config.yaml", config_path=f"{os.getcwd()}/configs")
-def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 0) -> None:
+def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 2, seed: int = 0) -> None:
     """Train a model on playing cards."""
     # var
     # hypp = cfg.hyperparameters
@@ -66,7 +66,7 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
         for i, (img, target) in enumerate(train_dataloader):
             img, target = img.to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
-            y_pred = pred_func(model(img))
+            y_pred = model(img)
             loss = loss_fn(y_pred, target)
             loss.backward()
             optimizer.step()
@@ -87,7 +87,7 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
                 with torch.no_grad():
                     for img, target in valid_dataloader:
                         img, target = img.to(DEVICE), target.to(DEVICE)
-                        y_pred = pred_func(model(img))
+                        y_pred = model(img)
                         vloss = loss_fn(y_pred, target)
 
                         accuracy = (y_pred.argmax(dim=1) == target).float().mean().item()
@@ -156,16 +156,16 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
     fig, axs = plt.subplots(2, 2, figsize=(15, 5))
     axs = axs.flat
     axs[0].plot(statistics["train_loss"])
-    axs[1].plot(statistics["train_accuracy"])
-    axs[2].plot(statistics["valid_loss"])
-    axs[3].plot(statistics["valid_accuracy"])
     axs[0].set_title("Train loss")
+    axs[1].plot(statistics["train_accuracy"])
     axs[1].set_title("Train accuracy")
+    axs[2].plot(statistics["valid_loss"])
     axs[2].set_title("Valid loss")
+    axs[3].plot(statistics["valid_accuracy"])
     axs[3].set_title("Valid accuracy")
-    fig.savefig(score_save_path)  # training_{prefix}.pth
-    print(f"      Model saved to: {model_save_path}")
-    print(f"Performance saved to: {score_save_path}")
+    fig.savefig(f"{project_dir}/reports/figures/training_{prefix}.png") # training_{prefix}.pth
+    print(f" Model saved to: {project_dir}/models/model_{prefix}.pth")
+    print(f"Figure saved to: {project_dir}/reports/figures/training_{prefix}.png")
 
 
 if __name__ == "__main__":

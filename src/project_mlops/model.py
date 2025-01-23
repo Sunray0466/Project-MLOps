@@ -1,6 +1,7 @@
 import timm
 import torch
 from torch import nn
+from transformers import ResNetForImageClassification
 
 # from transformers import ResNetForImageClassification
 
@@ -57,14 +58,14 @@ class CNN(nn.Module):
         return x
 
 
-# def resnet50():
-#     model = ResNetForImageClassification.from_pretrained(
-#         "microsoft/resnet-50", num_labels=53, ignore_mismatched_sizes=True
-#     )
-#     # freeze all layers except the last 10
-#     for param in list(model.parameters())[:-6]:
-#         param.requires_grad = False
-#     return model
+def resnet50():
+    model = ResNetForImageClassification.from_pretrained(
+        "microsoft/resnet-50", num_labels=53, ignore_mismatched_sizes=True
+    )
+    # freeze all layers except the last 10
+    for param in list(model.parameters())[:-6]:
+        param.requires_grad = False
+    return model
 class PretrainedResNet(nn.Module):
     """My awesome model."""
 
