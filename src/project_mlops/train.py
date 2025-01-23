@@ -33,7 +33,7 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
     # seed        = hypp.seed
 
     # project_dir = hydra.utils.get_original_cwd()
-    #project_dir = os.getcwd()
+    # project_dir = os.getcwd()
     project_dir = "/gcs/dtumlops-bucket-group35"
 
     # log = logging.getLogger(__name__)
@@ -166,7 +166,7 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
     axs[2].set_title("Valid loss")
     axs[3].plot(statistics["valid_accuracy"])
     axs[3].set_title("Valid accuracy")
-    fig.savefig(f"{project_dir}/reports/figures/training_{prefix}.png") # training_{prefix}.pth
+    fig.savefig(f"{project_dir}/reports/figures/training_{prefix}.png")  # training_{prefix}.pth
     print(f" Model saved to: {project_dir}/models/model_{prefix}.pth")
     print(f"Figure saved to: {project_dir}/reports/figures/training_{prefix}.png")
 

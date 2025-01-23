@@ -1,7 +1,9 @@
 import timm
 import torch
 from torch import nn
+
 # from transformers import ResNetForImageClassification
+
 
 class CNN(nn.Module):
     """My awesome model."""

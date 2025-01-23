@@ -2,13 +2,10 @@
 import glob
 import os
 
-import torch
-import numpy as np
-from torchvision.io import read_image as img2torch
-
-os.environ["KAGGLE_USERNAME"] = "berkayakbulut"
-os.environ["KAGGLE_KEY"] = "86952cf72fda508a8877018b9e5e739e"
 import kaggle as kg
+import numpy as np
+import torch
+from torchvision.io import read_image as img2torch
 
 
 def fetch_kaggle(forced: bool = False) -> None:
@@ -51,7 +48,7 @@ def preprocess_data() -> None:
     idx2targets = dict(enumerate(targets_sort))
     targets2idx = dict(map(reversed, idx2targets.items()))
     torch.save(idx2targets, f"{processed_dir}/label_converter.pt")
-    np.save(f"{processed_dir}/label_converter.npy",idx2targets)
+    np.save(f"{processed_dir}/label_converter.npy", idx2targets)
 
     # preprocess data
     for data in ["train", "valid", "test"]:
