@@ -1,6 +1,7 @@
-from torch import nn
 import timm
 import torch
+from torch import nn
+
 # from transformers import ResNetForImageClassification
 
 
@@ -67,9 +68,9 @@ class CNN(nn.Module):
 class PretrainedResNet(nn.Module):
     """My awesome model."""
 
-    def __init__(self, num_classes = 53) -> None:
+    def __init__(self, num_classes=53) -> None:
         super(PretrainedResNet, self).__init__()
-        self.model = timm.create_model('resnet18', pretrained=True, num_classes=num_classes)
+        self.model = timm.create_model("resnet18", pretrained=True, num_classes=num_classes)
 
         # Freeze earlier layers (layer1 and layer2)
         for param in self.model.layer1.parameters():
@@ -91,7 +92,6 @@ class PretrainedResNet(nn.Module):
         return self.model(x)
 
 
-
 def model_list(model_type: str = "cnn"):
     "Returns given model as well as a function to extract the model prediction"
     model_type = model_type.lower()
@@ -111,4 +111,3 @@ if __name__ == "__main__":
     model = PretrainedResNet()
     print(f"Model architecture: {model}")
     print(f"Number of parameters: {sum(p.numel() for p in model.parameters())}")
-
