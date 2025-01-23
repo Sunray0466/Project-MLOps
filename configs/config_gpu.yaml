@@ -7,3 +7,11 @@ workerPoolSpecs:
     replicaCount: 1
     containerSpec:
         imageUri: europe-west1-docker.pkg.dev/mlops-448220/mlops-artifact/train:latest
+        env:
+        - name: WANDB_API_KEY
+          value: $WANDB_API_KEY
+        - name: KAGGLE_API_KEY
+          value: $KAGGLE_API_KEY
+        - name: KAGGLE_API_USERNAME
+          value: $KAGGLE_API_USERNAME
+        
