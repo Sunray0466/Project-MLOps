@@ -5,9 +5,10 @@ import os
 import torch
 import numpy as np
 from torchvision.io import read_image as img2torch
+import utils
 
-os.environ["KAGGLE_USERNAME"] = "berkayakbulut"
-os.environ["KAGGLE_KEY"] = "86952cf72fda508a8877018b9e5e739e"
+os.environ["KAGGLE_USERNAME"] = "KAGGLE_API_USERNAME"#"berkayakbulut"
+os.environ["KAGGLE_KEY"] = "KAGGLE_API_KEY"#"86952cf72fda508a8877018b9e5e739e"
 import kaggle as kg
 
 
@@ -69,16 +70,10 @@ def preprocess_data() -> None:
     print("Done preprocessing")
 
 
-def playing_cards(host_location="github") -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
-    # Allowed values are google_cloud or github
-
-    if host_location == "google_cloud":
-        project_dir = "gcs"
-    elif host_location == "github":
-        project_dir = os.getcwd()
-    else:
-        raise Exception(f"provided host_location: {host_location} is not one of ['google_cloud', 'github']")
-
+def playing_cards(project_dir = None) -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
+    # Get playing card dataset
+    if not project_dir:
+        project_dir = utils.get_project_dir()
     """Return train and test datasets for playing-cards dataset."""
     train_images = torch.load(f"{project_dir}/data/processed/cards-dataset/train_images.pt", weights_only=True)
     train_target = torch.load(f"{project_dir}/data/processed/cards-dataset/train_target.pt", weights_only=True)
@@ -94,7 +89,7 @@ def playing_cards(host_location="github") -> tuple[torch.utils.data.Dataset, tor
 
 
 if __name__ == "__main__":
-    # fetch_kaggle()
+    fetch_kaggle()
     preprocess_data()
     # typer.run(fetch_kaggle)
 

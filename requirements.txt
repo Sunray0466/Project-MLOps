@@ -32,6 +32,7 @@ dvc-gs
 fastapi
 pydantic
 uvicorn
+python-multipart
 requests
 httpx
 locust

@@ -8,46 +8,45 @@ from datetime import datetime
 import hydra
 import matplotlib.pyplot as plt
 import torch
+from model import model_list
 import typer
 from loguru import logger as log
-from model import *
 from sklearn.metrics import RocCurveDisplay, accuracy_score, f1_score, precision_score, recall_score
 
 import wandb
 from data import playing_cards
+import utils
+import omegaconf
 
 # Replace underscores with dashes in CLI arguments
 sys.argv = [arg.replace("_", "-") if "--" in arg else arg for arg in sys.argv]
-
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
 
-# @hydra.main(config_name="config.yaml", config_path=f"{os.getcwd()}/configs")
-def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 0) -> None:
+@hydra.main(config_name="hyperparams.yaml", config_path=f"{os.getcwd()}/configs", version_base="1.1")
+def train(cfg) -> None:
     """Train a model on playing cards."""
     # var
-    # hypp = cfg.hyperparameters
-    # batch_size  = hypp.batch_size
-    # lr          = hypp.lr
-    # epochs      = hypp.epochs
-    # seed        = hypp.seed
-
-    # project_dir = hydra.utils.get_original_cwd()
-    project_dir = os.getcwd()
-
-    # log = logging.getLogger(__name__)
-    log.info(f"{batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
-
-    run = wandb.init(
-        project="playing_cards",
-        config={"lr": lr, "batch_size": batch_size, "epochs": epochs},
+    model_type  = cfg.model
+    batch_size  = cfg.batch_size
+    lr          = cfg.get("lr", cfg.default[model_type].lr)
+    epochs      = cfg.epochs
+    seed        = cfg.seed
+    project_dir = utils.get_project_dir() # hydra.utils.get_original_cwd()
+    
+    log = logging.getLogger(__name__)
+    log.info(f"{model_type=}, {batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
+    wandb.config = omegaconf.OmegaConf.to_container(
+        cfg, resolve=True, throw_on_missing=True
     )
+    run = wandb.init(project="playing_cards", settings=wandb.Settings(start_method="thread"))
 
     # model/data
     log.info(f"Using Device: {DEVICE}")
     torch.manual_seed(seed)
-    model = PretrainedResNet().to(DEVICE)
-    train_set, valid_set, _ = playing_cards()
+    model, pred_func = model_list(model_type)
+    model = model.to(DEVICE)
+    train_set, valid_set, _ = playing_cards(project_dir)
 
     train_dataloader = torch.utils.data.DataLoader(train_set, batch_size=batch_size, shuffle=True)
     valid_dataloader = torch.utils.data.DataLoader(valid_set, batch_size=batch_size, shuffle=True)
@@ -66,7 +65,7 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
         for i, (img, target) in enumerate(train_dataloader):
             img, target = img.to(DEVICE), target.to(DEVICE)
             optimizer.zero_grad()
-            y_pred = model(img)
+            y_pred = pred_func(model(img))
             loss = loss_fn(y_pred, target)
             loss.backward()
             optimizer.step()
@@ -87,7 +86,7 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
                 with torch.no_grad():
                     for img, target in valid_dataloader:
                         img, target = img.to(DEVICE), target.to(DEVICE)
-                        y_pred = model(img)
+                        y_pred = pred_func(model(img))
                         vloss = loss_fn(y_pred, target)
 
                         accuracy = (y_pred.argmax(dim=1) == target).float().mean().item()
@@ -100,7 +99,6 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
                 log.info(
                     f"Epoch {epoch:>2}, iter {i + 1:>4}, train-loss: {loss.item():.4f}, valid-loss: {valid_loss:.4f}, valid-accuracy: {valid_accuracy * 100:.2f}%"
                 )
-
                 # add a plot of the input images
                 images = wandb.Image(img[:5].detach().cpu(), caption="Input images")
                 wandb.log({"images": images})
@@ -114,8 +112,11 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
         # add a custom matplotlib plot of the ROC curves
         preds = torch.cat(preds, 0)
         targets = torch.cat(targets, 0)
+        fig,axes = plt.subplots(4,13, figsize=(24,18))
+        axes = list(axes.flat)
+        axes.append(fig.add_subplot(5,6,1))
 
-        for class_id in range(10):
+        for class_id in range(53):
             one_hot = torch.zeros_like(targets)
             one_hot[targets == class_id] = 1
             _ = RocCurveDisplay.from_predictions(
@@ -123,8 +124,10 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
                 preds[:, class_id].cpu().numpy(),
                 name=f"ROC curve for {class_id}",
                 plot_chance_level=(class_id == 2),
+                ax=axes[class_id]
             )
-
+            axes[class_id].axis("off")
+        
         # alternatively use wandb.log({"roc": wandb.Image(plt)}
         wandb.log({"roc": wandb.Image(plt)})
         plt.close()  # close the plot to avoid memory leaks and overlapping figures
@@ -135,14 +138,13 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
     final_f1 = f1_score(targets, preds.argmax(dim=1), average="weighted")
 
     log.info("Training completed")
-    # prefix = hydra.utils.get_original_cwd().split("outputs\\")[-1].replace("\\","_") # yyyy-mm-dd_hh-mm-ss
-    # Get the current date and time
+    # Get the current date and time and format to string
     current_datetime = datetime.now()
-
-    # Format the date and time as a string
     prefix = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
+    model_save_path = f"{project_dir}/models/{model_type}_{prefix}.pth"
+    score_save_path = f"{os.getcwd()}/training_{prefix}.png"
 
-    torch.save(model.state_dict(), f"{project_dir}/models/model_{prefix}.pth")  # model_{prefix}.pth
+    torch.save(model.state_dict(), model_save_path)  # model_{prefix}.pth
 
     artifact = wandb.Artifact(
         name="playing_cards_model",
@@ -150,24 +152,28 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
         description="A model trained to classify playing cards.",
         metadata={"accuracy": final_accuracy, "precision": final_precision, "recall": final_recall, "f1": final_f1},
     )
-    artifact.add_file(f"{project_dir}/models/model_{prefix}.pth")
+    artifact.add_file(model_save_path)
     run.log_artifact(artifact)
+    
+    
+    wandb.log({"valid_loss": statistics["valid_loss"], "valid_accuracy": statistics["valid_accuracy"]})
 
     fig, axs = plt.subplots(2, 2, figsize=(15, 5))
     axs = axs.flat
     axs[0].plot(statistics["train_loss"])
-    axs[0].set_title("Train loss")
     axs[1].plot(statistics["train_accuracy"])
-    axs[1].set_title("Train accuracy")
     axs[2].plot(statistics["valid_loss"])
-    axs[2].set_title("Valid loss")
     axs[3].plot(statistics["valid_accuracy"])
+    axs[0].set_title("Train loss")
+    axs[1].set_title("Train accuracy")
+    axs[2].set_title("Valid loss")
     axs[3].set_title("Valid accuracy")
-    fig.savefig(f"{project_dir}/reports/figures/training_{prefix}.png") # training_{prefix}.pth
-    print(f" Model saved to: {project_dir}/models/model_{prefix}.pth")
-    print(f"Figure saved to: {project_dir}/reports/figures/training_{prefix}.png")
+    fig.savefig(score_save_path) # training_{prefix}.pth
+    print(f"      Model saved to: {model_save_path}")
+    print(f"Performance saved to: {score_save_path}")
 
 
 if __name__ == "__main__":
-    typer.run(train)
-    # test
+    train()
+    # typer.run(train)
+    

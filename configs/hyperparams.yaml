@@ -1,11 +1,16 @@
-﻿model: "resnet50"
+﻿wandb: 
+  project: "playing_cards"
+model: "timmresnet"
 pretrained: False
 batch_size: 64
 epochs: 10
 seed: 0
+lr: 
 
 default:
   cnn:
     lr: 1e-4
-  resnet50:
+  huggingresnet:
+    lr: 1e-3
+  timmresnet:
     lr: 1e-3

@@ -19,3 +19,9 @@ parameters:
   seed:
     value: 0
 run_cap: 5
+
+command:
+  - ${env}
+  - C:\Users\son22\Desktop\Project-MLOps\.venv\Scripts\python.exe
+  - ${program}
+  - ${args_no_hyphens}
