@@ -1,0 +1,11 @@
+﻿model: "resnet50"
+pretrained: False
+batch_size: 64
+epochs: 10
+seed: 0
+
+default:
+  cnn:
+    lr: 1e-4
+  resnet50:
+    lr: 1e-3

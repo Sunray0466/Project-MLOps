@@ -178,3 +178,4 @@ cython_debug/
 
 data/processed
 data/raw
+models/

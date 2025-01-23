@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 import torch
 import typer
-from src.project_mlops.model import ModelConvolution
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
+
+from src.project_mlops.model import ModelConvolution
 
 
 def visualize(model_checkpoint: str, figure_name: str = "embeddings.png") -> None:

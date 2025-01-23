@@ -43,7 +43,9 @@ ptflops
 transformers
 datasets
 # s10 - extra
+onnx
 onnxruntime
+onnxscript
 scikit-learn
 mkdocs-material
 streamlit
@@ -56,5 +58,3 @@ Markdown
 matplotlib
 scikit_learn
 kaggle
---find-links https://download.pytorch.org/whl/torch_stable.html
-torch==2.5.1+cu124

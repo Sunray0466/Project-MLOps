@@ -1,0 +1,10 @@
+model: cnn
+pretrained: false
+batch_size: 64
+epochs: 20
+seed: 0
+default:
+  cnn:
+    lr: 0.0001
+  resnet50:
+    lr: 0.001
