@@ -7,13 +7,13 @@ RUN apt update && \
 
 COPY src/ src/
 COPY requirements.txt /requirements.txt
-COPY requirements_dev.txt requirements_dev.txt
-COPY README.md README.md
-COPY pyproject.toml pyproject.toml
+COPY requirements_dev.txt /requirements_dev.txt
+COPY README.md /README.md
+COPY pyproject.toml /pyproject.toml
 COPY configs/ configs/
 COPY models/ models/
 COPY docs/ docs/
-COPY tasks.py tasks.py
+COPY tasks.py /tasks.py
 COPY reports/ reports/
 
 WORKDIR /
