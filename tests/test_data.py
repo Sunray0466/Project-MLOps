@@ -6,7 +6,7 @@ from project_mlops.data import fetch_kaggle, normalize, playing_cards
 
 def test_playing_cards():
     # Load datasets
-    train_set, valid_set, test_set = playing_cards()
+    train_set, valid_set, test_set = playing_cards("github")
 
     # Assert dataset sizes
     assert len(train_set) == 7624, "Train dataset size should be 7624"
