@@ -39,6 +39,8 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
     # log = logging.getLogger(__name__)
     log.info(f"{batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
 
+    wandb.login(key=os.getenv("WANDB_API_KEY"))
+
     run = wandb.init(
         project="playing_cards",
         config={"lr": lr, "batch_size": batch_size, "epochs": epochs},
