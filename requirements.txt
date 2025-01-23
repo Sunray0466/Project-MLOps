@@ -56,5 +56,7 @@ neural_compressor
 loguru
 Markdown
 matplotlib
-scikit_learn
 kaggle
+timm
+#--find-links https://download.pytorch.org/whl/torch_stable.html
+#torch==2.5.1+cu124

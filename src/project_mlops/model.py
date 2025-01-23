@@ -1,5 +1,7 @@
 from torch import nn
-from transformers import ResNetForImageClassification
+import timm
+import torch
+# from transformers import ResNetForImageClassification
 
 
 class CNN(nn.Module):
@@ -54,14 +56,40 @@ class CNN(nn.Module):
         return x
 
 
-def resnet50():
-    model = ResNetForImageClassification.from_pretrained(
-        "microsoft/resnet-50", num_labels=53, ignore_mismatched_sizes=True
-    )
-    # freeze all layers except the last 10
-    for param in list(model.parameters())[:-6]:
-        param.requires_grad = False
-    return model
+# def resnet50():
+#     model = ResNetForImageClassification.from_pretrained(
+#         "microsoft/resnet-50", num_labels=53, ignore_mismatched_sizes=True
+#     )
+#     # freeze all layers except the last 10
+#     for param in list(model.parameters())[:-6]:
+#         param.requires_grad = False
+#     return model
+class PretrainedResNet(nn.Module):
+    """My awesome model."""
+
+    def __init__(self, num_classes = 53) -> None:
+        super(PretrainedResNet, self).__init__()
+        self.model = timm.create_model('resnet18', pretrained=True, num_classes=num_classes)
+
+        # Freeze earlier layers (layer1 and layer2)
+        for param in self.model.layer1.parameters():
+            param.requires_grad = False
+        for param in self.model.layer2.parameters():
+            param.requires_grad = False
+
+        # Fine-tune layer3, layer4, and fc layer
+        for param in self.model.layer3.parameters():
+            param.requires_grad = True
+        for param in self.model.layer4.parameters():
+            param.requires_grad = True
+
+        # Change the number of output classes
+        self.model.fc = nn.Linear(self.model.fc.in_features, num_classes)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        """Forward pass."""
+        return self.model(x)
+
 
 
 def model_list(model_type: str = "cnn"):
@@ -80,6 +108,7 @@ def model_list(model_type: str = "cnn"):
 
 
 if __name__ == "__main__":
-    model, _ = model_list("resnet50")
-    # print(f"Model architecture: {model}")
-    # print(f"Number of parameters: {sum(p.numel() for p in model.parameters())}")
+    model = PretrainedResNet()
+    print(f"Model architecture: {model}")
+    print(f"Number of parameters: {sum(p.numel() for p in model.parameters())}")
+
