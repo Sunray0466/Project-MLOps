@@ -4,31 +4,30 @@ import os
 import hydra
 import matplotlib.pyplot as plt
 import torch
-import hydra
-import os
-from data import playing_cards
 from model import model_list
-import logging
+
+from data import playing_cards
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
+
 
 @hydra.main(config_name="hyperparams.yaml", config_path=f"{os.getcwd()}/configs")
 def train(chp) -> None:
     """Train a model on playing cards."""
     # var
-    model_type  = chp.model
-    batch_size  = chp.batch_size
-    lr          = chp.get("lr", chp.default[model_type].lr)
-    epochs      = chp.epochs
-    seed        = chp.seed
+    model_type = chp.model
+    batch_size = chp.batch_size
+    lr = chp.get("lr", chp.default[model_type].lr)
+    epochs = chp.epochs
+    seed = chp.seed
     project_dir = hydra.utils.get_original_cwd()
     log = logging.getLogger(__name__)
     log.info(f"{model_type=}, {batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
-    
+
     # model/data
     print(DEVICE)
     torch.manual_seed(seed)
-    model,pred_func = model_list(model_type)
+    model, pred_func = model_list(model_type)
     model = model.to(DEVICE)
     train_set, valid_set, _ = playing_cards(project_dir)
 
@@ -78,11 +77,11 @@ def train(chp) -> None:
 
     log.info("Training completed")
     # save model + score
-    prefix = os.getcwd().split("outputs\\")[-1].replace("\\","_") # yyyy-mm-dd_hh-mm-ss
+    prefix = os.getcwd().split("outputs\\")[-1].replace("\\", "_")  # yyyy-mm-dd_hh-mm-ss
     model_save_path = f"{project_dir}/models/{model_type}_{prefix}.pth"
     score_save_path = f"{os.getcwd()}/training_{prefix}.png"
-    
-    torch.save(model.state_dict(), model_save_path) # model_{prefix}.pth
+
+    torch.save(model.state_dict(), model_save_path)  # model_{prefix}.pth
     fig, axs = plt.subplots(2, 2, figsize=(15, 5))
     axs = axs.flat
     axs[0].plot(statistics["train_loss"])
@@ -93,7 +92,7 @@ def train(chp) -> None:
     axs[1].set_title("Train accuracy")
     axs[2].set_title("Valid loss")
     axs[3].set_title("Valid accuracy")
-    fig.savefig(score_save_path) # training_{prefix}.pth
+    fig.savefig(score_save_path)  # training_{prefix}.pth
     print(f"      Model saved to: {model_save_path}")
     print(f"Performance saved to: {score_save_path}")
 

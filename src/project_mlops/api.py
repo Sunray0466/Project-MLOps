@@ -1,22 +1,23 @@
-from fastapi import FastAPI, File, HTTPException, UploadFile
-from http import HTTPStatus
-from contextlib import asynccontextmanager
-
-import torch
-from torchvision import transforms
-from PIL import Image
 import io
 import pickle
+from contextlib import asynccontextmanager
+from http import HTTPStatus
+
 import anyio
-import onnxruntime as rt
 import numpy as np
+import onnxruntime as rt
+import torch
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from PIL import Image
+from torchvision import transforms
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Context manager to start and stop the lifespan events of the FastAPI application."""
     global model_session, input_names, output_names, transform, idx2labels
     # Load onnx model
-    provider_list = ['CUDAExecutionProvider', 'AzureExecutionProvider', 'CPUExecutionProvider']
+    provider_list = ["CUDAExecutionProvider", "AzureExecutionProvider", "CPUExecutionProvider"]
     model_session = rt.InferenceSession("models/cnn_model.onnx", providers=provider_list)
     input_names = [i.name for i in model_session.get_inputs()]
     output_names = [i.name for i in model_session.get_outputs()]
@@ -46,6 +47,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
+
 @app.get("/")
 async def root():
     """Root endpoint."""
@@ -57,12 +59,11 @@ def predict_image(img_tensor) -> list[str]:
     batch = {input_names[0]: img_tensor}
     output = model_session.run(output_names, batch)
     predicted_idx = np.argmax(output, axis=2)
-    
-    
+
     labels = []
     for label_idx in predicted_idx:
         labels.append(idx2labels[label_idx.item()])
-    return output.softmax(dim=1), labels # output.softmax(dim=-1)
+    return output.softmax(dim=1), labels  # output.softmax(dim=-1)
 
 
 # FastAPI endpoint for image classification
@@ -71,13 +72,12 @@ async def classify_image(file: UploadFile = File(...)):
     """Classify image endpoint."""
     try:
         byte_img = await file.read()
-        img = Image.open(io.BytesIO(byte_img)).resize((224,224))
+        img = Image.open(io.BytesIO(byte_img)).resize((224, 224))
         img = (img - np.mean(img)) / np.std(img)
         probabilities, prediction = predict_image(img)
         return {"filename": file.filename, "prediction": prediction, "probabilities": probabilities.tolist()}
     except Exception as e:
         raise HTTPException(status_code=500) from e
-    
 
 
 # from enum import Enum
@@ -87,7 +87,7 @@ async def classify_image(file: UploadFile = File(...)):
 #     alexnet = "alexnet"
 #     resnet = "resnet"
 #     lenet = "lenet"
-    
+
 # app = FastAPI()
 
 # @app.get("/")

@@ -1,12 +1,14 @@
 # import typer
 import glob
 import os
+
 import torch
 from torchvision.io import read_image as img2torch
 
 os.environ["KAGGLE_USERNAME"] = "berkayakbulut"
 os.environ["KAGGLE_KEY"] = "86952cf72fda508a8877018b9e5e739e"
 import kaggle as kg
+
 
 def fetch_kaggle(forced: bool = False) -> None:
     """Download data from kaggle and save it to raw directory"""
@@ -46,9 +48,9 @@ def preprocess_data() -> None:
         "joker"
     ]  # remove joker, sort list and then add joker back in
     idx2targets = dict(enumerate(targets_sort))
-    targets2idx = dict(map(reversed,idx2targets.items()))
+    targets2idx = dict(map(reversed, idx2targets.items()))
     torch.save(idx2targets, f"{processed_dir}/label_converter.pt")
-    
+
     # preprocess data
     for data in ["train", "valid", "test"]:
         print("Preprocessing", data)

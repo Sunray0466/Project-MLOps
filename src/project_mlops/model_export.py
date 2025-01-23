@@ -1,7 +1,6 @@
-
-import torch
 # import pickle
 import onnxruntime as rt
+import torch
 from model import model_list
 
 # def torch2pickle(model_checkpoint: str):
@@ -12,10 +11,11 @@ from model import model_list
 #         pickle.dump(model, file)
 #     print("Model converted to pickle")
 
+
 def torch2onnx(model_checkpoint: str, get_optimized: bool = True):
     model_type = model_checkpoint.split("_")[0]
-    model,_ = model_list(model_type)
-    model.load_state_dict(torch.load("models/"+model_checkpoint, weights_only=True))
+    model, _ = model_list(model_type)
+    model.load_state_dict(torch.load("models/" + model_checkpoint, weights_only=True))
     model.eval()
     dummy_input = torch.zeros(1, 3, 224, 224)
     torch.onnx.export(
@@ -24,12 +24,12 @@ def torch2onnx(model_checkpoint: str, get_optimized: bool = True):
         f=f"models/{model_type}_model.onnx",
         input_names=["input"],
         output_names=["output"],
-        dynamic_axes={"input": {0: "batch_size"}, "output": {0: "batch_size"}}
+        dynamic_axes={"input": {0: "batch_size"}, "output": {0: "batch_size"}},
     )
     if get_optimized:
         optimize_onnx(f"models/{model_type}_model.onnx")
     print("Model converted to onnx")
-    
+
 
 def optimize_onnx(model_onnx_path: str):
     sess_options = rt.SessionOptions()
