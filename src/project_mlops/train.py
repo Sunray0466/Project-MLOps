@@ -5,23 +5,32 @@ import wandb
 import os
 from data import playing_cards
 from model import *
-import logging
+#import logging
 from datetime import datetime
 from sklearn.metrics import RocCurveDisplay, accuracy_score, f1_score, precision_score, recall_score
+from loguru import logger as log
+import typer
+import sys
+
+# Replace underscores with dashes in CLI arguments
+sys.argv = [arg.replace("_", "-") if "--" in arg else arg for arg in sys.argv]
 
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu")
 
-@hydra.main(config_name="config.yaml", config_path=f"{os.getcwd()}/configs")
-def train(cfg) -> None:
+#@hydra.main(config_name="config.yaml", config_path=f"{os.getcwd()}/configs")
+def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 0) -> None:
     """Train a model on playing cards."""
     # var
-    hypp = cfg.hyperparameters
-    batch_size  = hypp.batch_size
-    lr          = hypp.learning_rate
-    epochs      = hypp.epochs
-    seed        = hypp.seed
-    project_dir = hydra.utils.get_original_cwd()
-    log = logging.getLogger(__name__)
+    # hypp = cfg.hyperparameters
+    # batch_size  = hypp.batch_size
+    # lr          = hypp.lr
+    # epochs      = hypp.epochs
+    # seed        = hypp.seed
+
+    #project_dir = hydra.utils.get_original_cwd()
+    project_dir = os.getcwd()
+
+    #log = logging.getLogger(__name__)
     log.info(f"{batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
 
     run = wandb.init(
@@ -157,4 +166,4 @@ def train(cfg) -> None:
     
 
 if __name__ == "__main__":
-    train()
+    typer.run(train)
