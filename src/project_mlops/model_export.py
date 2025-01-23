@@ -45,3 +45,4 @@ def optimize_onnx(model_onnx_path: str):
 
 if __name__ == "__main__":
     torch2onnx("cnn_2025-01-22_14-39-37.pth")
+    

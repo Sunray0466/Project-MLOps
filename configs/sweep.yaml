@@ -1,0 +1,21 @@
+program: src/project_mlops/train.py
+name: trainingsweep
+project: playing_cards  # change this
+#entity: ozkanyamaner  # change this
+method: bayes
+metric:
+  goal: minimize
+  name: validation_loss
+parameters:
+  lr:
+    values: [0.001, 0.0001]
+    distribution: categorical
+  batch_size:
+    values: [32, 64]
+    distribution: categorical
+  epochs:
+    values: [2, 3, 4]
+    distribution: categorical
+  seed:
+    value: 0
+run_cap: 5
