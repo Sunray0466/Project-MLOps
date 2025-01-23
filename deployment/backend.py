@@ -14,7 +14,7 @@ async def lifespan(app: FastAPI):
     global model_session, input_names, output_names, idx2labels
     # Load onnx model
     provider_list = ["CUDAExecutionProvider", "AzureExecutionProvider", "CPUExecutionProvider"]
-    model_session = rt.InferenceSession("cnn_model.onnx", providers=provider_list)
+    model_session = rt.InferenceSession("resnet18_model.onnx", providers=provider_list)
     input_names = [i.name for i in model_session.get_inputs()]
     output_names = [i.name for i in model_session.get_outputs()]
     

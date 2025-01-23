@@ -69,11 +69,11 @@ def preprocess_data() -> None:
     print("Done preprocessing")
 
 
-def playing_cards(host_location="github") -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
+def playing_cards(host_location="google_cloud") -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
     # Allowed values are google_cloud or github
 
     if host_location == "google_cloud":
-        project_dir = "gcs"
+        project_dir = "/gcs/dtumlops-bucket-group35"
     elif host_location == "github":
         project_dir = os.getcwd()
     else:
@@ -94,7 +94,7 @@ def playing_cards(host_location="github") -> tuple[torch.utils.data.Dataset, tor
 
 
 if __name__ == "__main__":
-    # fetch_kaggle()
+    fetch_kaggle()
     preprocess_data()
     # typer.run(fetch_kaggle)
 

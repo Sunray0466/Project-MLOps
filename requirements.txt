@@ -58,5 +58,6 @@ Markdown
 matplotlib
 kaggle
 timm
+wandb
 #--find-links https://download.pytorch.org/whl/torch_stable.html
 #torch==2.5.1+cu124

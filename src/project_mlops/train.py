@@ -33,7 +33,8 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
     # seed        = hypp.seed
 
     # project_dir = hydra.utils.get_original_cwd()
-    project_dir = os.getcwd()
+    #project_dir = os.getcwd()
+    project_dir = "/gcs/dtumlops-bucket-group35"
 
     # log = logging.getLogger(__name__)
     log.info(f"{batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
