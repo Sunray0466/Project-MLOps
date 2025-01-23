@@ -35,6 +35,7 @@ uvicorn
 requests
 httpx
 locust
+python-multipart
 # s8 - monitoring
 evidently
 prometheus-fastapi-instrumentator
