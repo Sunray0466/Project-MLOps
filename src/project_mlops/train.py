@@ -170,3 +170,4 @@ def train(lr: float = 0.001, batch_size: int = 32, epochs: int = 1, seed: int = 
 
 if __name__ == "__main__":
     typer.run(train)
+    # test
