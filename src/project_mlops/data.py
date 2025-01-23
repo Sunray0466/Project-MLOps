@@ -1,14 +1,12 @@
 # import typer
 import glob
 import os
-
-os.environ["KAGGLE_USERNAME"] = "berkayakbulut"
-os.environ["KAGGLE_KEY"] = "86952cf72fda508a8877018b9e5e739e"
-
-import kaggle as kg
 import torch
 from torchvision.io import read_image as img2torch
 
+os.environ["KAGGLE_USERNAME"] = "berkayakbulut"
+os.environ["KAGGLE_KEY"] = "86952cf72fda508a8877018b9e5e739e"
+import kaggle as kg
 
 def fetch_kaggle(forced: bool = False) -> None:
     """Download data from kaggle and save it to raw directory"""
@@ -67,37 +65,23 @@ def preprocess_data() -> None:
     print("Done preprocessing")
 
 
-def playing_cards(project_dir) -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
+def playing_cards(host_location="github") -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
     # Allowed values are google_cloud or github
 
-    # if os.path.exists("/.dockerenv"):
-    """Return train and test datasets for playing-cards dataset in the cloud."""
-    train_images = torch.load(
-        f"/gcs/dtumlops-bucket-group35/data/processed/cards-dataset/train_images.pt", weights_only=True
-    )
-    train_target = torch.load(
-        f"/gcs/dtumlops-bucket-group35/data/processed/cards-dataset/train_target.pt", weights_only=True
-    )
-    valid_images = torch.load(
-        f"/gcs/dtumlops-bucket-group35/data/processed/cards-dataset/valid_images.pt", weights_only=True
-    )
-    valid_target = torch.load(
-        f"/gcs/dtumlops-bucket-group35/data/processed/cards-dataset/valid_target.pt", weights_only=True
-    )
-    test_images = torch.load(
-        f"/gcs/dtumlops-bucket-group35/data/processed/cards-dataset/test_images.pt", weights_only=True
-    )
-    test_target = torch.load(
-        f"/gcs/dtumlops-bucket-group35/data/processed/cards-dataset/test_target.pt", weights_only=True
-    )
-    # else:
-    # """Return train and test datasets for playing-cards dataset."""
-    # train_images = torch.load(f"{project_dir}/data/processed/cards-dataset/train_images.pt", weights_only=True)
-    # train_target = torch.load(f"{project_dir}/data/processed/cards-dataset/train_target.pt", weights_only=True)
-    # valid_images = torch.load(f"{project_dir}/data/processed/cards-dataset/valid_images.pt", weights_only=True)
-    # valid_target = torch.load(f"{project_dir}/data/processed/cards-dataset/valid_target.pt", weights_only=True)
-    # test_images = torch.load(f"{project_dir}/data/processed/cards-dataset/test_images.pt", weights_only=True)
-    # test_target = torch.load(f"{project_dir}/data/processed/cards-dataset/test_target.pt", weights_only=True)
+    if host_location == "google_cloud":
+        project_dir = "gcs"
+    elif host_location == "github":
+        project_dir = os.getcwd()
+    else:
+        raise Exception(f"provided host_location: {host_location} is not one of ['google_cloud', 'github']")
+
+    """Return train and test datasets for playing-cards dataset."""
+    train_images = torch.load(f"{project_dir}/data/processed/cards-dataset/train_images.pt", weights_only=True)
+    train_target = torch.load(f"{project_dir}/data/processed/cards-dataset/train_target.pt", weights_only=True)
+    valid_images = torch.load(f"{project_dir}/data/processed/cards-dataset/valid_images.pt", weights_only=True)
+    valid_target = torch.load(f"{project_dir}/data/processed/cards-dataset/valid_target.pt", weights_only=True)
+    test_images = torch.load(f"{project_dir}/data/processed/cards-dataset/test_images.pt", weights_only=True)
+    test_target = torch.load(f"{project_dir}/data/processed/cards-dataset/test_target.pt", weights_only=True)
 
     train_set = torch.utils.data.TensorDataset(train_images, train_target)
     valid_set = torch.utils.data.TensorDataset(valid_images, valid_target)
