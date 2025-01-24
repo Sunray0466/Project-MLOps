@@ -47,7 +47,7 @@ def get_backend_url():
     client = run_v2.ServicesClient()
     services = client.list_services(parent=parent)
     for service in services:
-        if service.name.split("/")[-1] == "production-model":
+        if service.name.split("/")[-1] == "backend":
             return service.uri
     name = os.environ.get("backend", None)
     return name

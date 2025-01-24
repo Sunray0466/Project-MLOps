@@ -41,7 +41,7 @@ def test_classify_image():
         "-H",
         "Content-Type: multipart/form-data",
         "-F",
-        f"file=@{project_dir}/tests/images/kingofhearts.jpg;type=image/jpeg",
+        f"img_files=@{project_dir}/tests/images/kingofhearts.jpg;type=image/jpeg",
     ]
 
     result = subprocess.run(curl_command, capture_output=True, text=True)
@@ -54,11 +54,11 @@ def test_classify_image():
     response_json = json.loads(result.stdout)
 
     # Assert probabilities are <= 1
-    for prob in response_json["probabilities"]:
-        assert prob <= 1.0, f"Probability {prob} exceeds 1.0"
-        assert prob >= 0.0, f"Probability {prob} is negative"
+    for prob_key, prob_value in response_json["probabilities"]["0"].items():
+        assert prob_value <= 100.0, f"Probability {prob_value} exceeds 1.0"
+        assert prob_value >= 0.0, f"Probability {prob_value} is negative"
 
     # Additional assertions on the response
-    assert response_json["filename"] == "kingofhearts.jpg"
+    assert response_json["filename"] == ["kingofhearts.jpg"]
     assert response_json["prediction"] == ["king of hearts"]
     assert len(response_json["probabilities"]) > 0

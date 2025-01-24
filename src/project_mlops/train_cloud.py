@@ -16,7 +16,7 @@ from model import model_list
 from sklearn.metrics import RocCurveDisplay, accuracy_score, f1_score, precision_score, recall_score
 
 import wandb
-from data import playing_cards
+from data_cloud import playing_cards
 
 # Replace underscores with dashes in CLI arguments
 sys.argv = [arg.replace("_", "-") if "--" in arg else arg for arg in sys.argv]
@@ -32,7 +32,7 @@ def train(cfg) -> None:
     lr = cfg.lr if cfg.lr != None else cfg.default[model_type].lr
     epochs = cfg.epochs
     seed = cfg.seed
-    project_dir = hydra.utils.get_original_cwd()
+    project_dir = "/gcs/dtumlops-bucket-group35"  # hydra.utils.get_original_cwd()
 
     log = logging.getLogger(__name__)
     log.info(f"{model_type=}, {batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
@@ -153,7 +153,7 @@ def train(cfg) -> None:
     artifact.add_file(model_save_path)
     run.log_artifact(artifact)
 
-    for vl, va in zip(statistics["valid_loss"], statistics["valid_accuracy"]):
+    for vl,va in zip(statistics["valid_loss"],statistics["valid_accuracy"]):
         wandb.log({"valid_loss": vl, "valid_accuracy": va})
 
     fig, axs = plt.subplots(2, 2, figsize=(15, 5))

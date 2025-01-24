@@ -2,7 +2,6 @@
 import glob
 import os
 
-import kaggle as kg
 import numpy as np
 import torch
 from torchvision.io import read_image as img2torch

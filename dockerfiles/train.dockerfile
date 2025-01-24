@@ -20,4 +20,4 @@ WORKDIR /
 RUN pip install -r requirements.txt --no-cache-dir --verbose
 RUN pip install . --no-deps --no-cache-dir --verbose
 
-ENTRYPOINT ["python", "-u", "src/project_mlops/train.py"]
+ENTRYPOINT ["python", "-u", "src/project_mlops/train_cloud.py"]

@@ -6,7 +6,10 @@ RUN apt update && \
 
 RUN mkdir /app
 
-COPY deployment/ app/
+COPY deployment/backend.py app/backend.py
+COPY deployment/label_converter.npy app/label_converter.npy
+COPY deployment/requirements_backend.txt app/requirements_backend.txt
+COPY deployment/resnet18_model.onnx app/resnet18_model.onnx
 
 WORKDIR /app
 RUN pip install -r requirements_backend.txt --no-cache-dir --verbose

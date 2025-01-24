@@ -14,11 +14,11 @@ async def lifespan(app: FastAPI):
     global model_session, input_names, output_names, idx2labels
     # Load onnx model
     provider_list = ["CUDAExecutionProvider", "AzureExecutionProvider", "CPUExecutionProvider"]
-    model_session = rt.InferenceSession("models/cnn_model.onnx", providers=provider_list)
+    model_session = rt.InferenceSession("resnet18_model.onnx", providers=provider_list)
     input_names = [i.name for i in model_session.get_inputs()]
     output_names = [i.name for i in model_session.get_outputs()]
 
-    idx2labels = np.load("deployment/label_converter.npy", allow_pickle=True).item()
+    idx2labels = np.load("label_converter.npy", allow_pickle=True).item()
 
     # run application
     yield
@@ -55,7 +55,7 @@ def predict_image(img) -> list[str]:
     for i in range(len(predicted_c)):
         prediction.append(idx2labels[predicted_c[i]])
         [print(j) for j in predicted_i[:, i]]
-        prob[i] = {idx2labels[int(j)]: round(predicted_p[j, i] * 100, 4) for j in predicted_i[:, i]}
+        prob[i] = {idx2labels[int(j)]: round(predicted_p[j, i].item() * 100, 4) for j in predicted_i[:, i]}
 
     return prob, prediction  # output.softmax(dim=-1)
 
@@ -75,7 +75,9 @@ async def classify_image(img_files: list[UploadFile] = list[File(...)]):
         name_arr.append(file.filename)
     img_arr = np.asarray(img_arr)
     img_arr = img_arr.transpose(0, 3, 1, 2)  # > batch,3,244,244
+    print("started prediction")
     probabilities, prediction = predict_image(img_arr)
+    print("prop", probabilities, "pred", prediction)
     return {"filename": name_arr, "prediction": prediction, "probabilities": probabilities}
     # except Exception as e:
     #     raise HTTPException(status_code=500) from e

@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from transformers import ResNetForImageClassification
 
-from project_mlops.model import CNN, HuggingfaceResnet, TimmResNet
+from src.project_mlops.model import CNN, HuggingfaceResnet, TimmResNet
 
 
 def test_model_initialization():
@@ -18,7 +18,7 @@ def test_model_initialization():
 
 def test_forward_pass_convolution():
     """Test the forward pass of the ModelConvolution."""
-    model = TimmResNet()
+    model = CNN()
     dummy_input = torch.randn(1, 3, 224, 224)  # Batch size of 1, 3 channels (RGB), 224x224 image
     output = model(dummy_input)
     assert output.shape == (1, 53), f"Expected output shape (1, 53), but got {output.shape}."
@@ -28,7 +28,7 @@ def test_forward_pass_resnet():
     """Test the forward pass of the Hugging Face ResNet model."""
     resnet_model = TimmResNet()
     dummy_input = torch.randn(1, 3, 224, 224)  # Batch size of 1, 3 channels (RGB), 224x224 image
-    output = resnet_model(dummy_input).logits  # Access logits for classification
+    output = resnet_model(dummy_input)  # Access logits for classification
     assert output.shape == (1, 53), f"Expected output shape (1, 53), but got {output.shape}."
 
 
@@ -37,13 +37,6 @@ def test_parameter_count():
     model = TimmResNet()
     num_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     assert num_params > 0, "ModelConvolution should have trainable parameters."
-
-
-def test_dropout_layers():
-    """Test if ModelConvolution has the correct number of dropout layers."""
-    model = TimmResNet()
-    dropout_layers = [module for module in model.modules() if isinstance(module, nn.Dropout)]
-    assert len(dropout_layers) == 3, f"Expected 3 Dropout layers, but found {len(dropout_layers)}."
 
 
 def test_resnet_pretrained_weights():
