@@ -593,4 +593,6 @@ For load testing, we would use the Locust framework, which allows simulating man
 >
 > Answer:
 
---- question 31 fill here ---
+1. Student s250069 was primarily responsible for continuous integration and testing throughout the project.
+
+I set up the initial continuous integration (CI) pipeline on the GitHub repository and progressively enhanced it by adding caching, multi-OS, and multi-version testing for Python and PyTorch. I integrated a linting step into the CI pipeline and configured pre-commit hooks to enforce code quality standards. Additionally, I created workflows that trigger CI runs when data changes or when updates are made to the model registry. In terms of testing, I developed unit tests for the data processing components and model construction, ensuring robust coverage of the pipeline. I calculated code coverage and integrated it into the GitHub Actions workflow to track progress. I also wrote API tests for our application and set up dedicated CI workflows to validate API functionality. This comprehensive approach to CI and testing significantly improved the reliability and maintainability of the project.
