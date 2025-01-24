@@ -7,17 +7,17 @@ steps:
     - |
       apk add --no-cache gettext
       envsubst < configs/config_gpu.yaml > configs/config_gpu.yaml.tmp
-      mv configs/config_gpu.yaml configs/config_gpu.yaml
+      mv configs/config_gpu.yaml.tmp configs/config_gpu.yaml
   secretEnv: ['WANDB_API_KEY', 'KAGGLE_API_KEY', 'KAGGLE_API_USERNAME']
 
-- name: 'alpine'
-  id: "Show config"
-  waitFor: ['Replace values in the training config']
-  entrypoint: "sh"
-  args:
-    - '-c'
-    - |
-      configs/config_gpu.yaml
+# - name: 'alpine'
+#   id: "Show config"
+#   waitFor: ['Replace values in the training config']
+#   entrypoint: "sh"
+#   args:
+#     - '-c'
+#     - |
+#       configs/config_gpu.yaml
 
 - name: 'gcr.io/cloud-builders/gcloud'
   id: 'Train on vertex AI'
@@ -27,9 +27,9 @@ steps:
     'custom-jobs',
     'create',
     '--region',
-    'europe-west1',
+    'europe-west4',
     '--display-name',
-    'example-mlops-job',
+    'experiment2',
     '--config',
     '${_VERTEX_TRAIN_CONFIG}',
   ]
@@ -37,9 +37,9 @@ substitutions:
   _VERTEX_TRAIN_CONFIG: 'configs/config_gpu.yaml'
 availableSecrets:
   secretManager:
-  - versionName: projects/mlops-448220/secrets/WANDB_API_KEY/versions/latest
+  - versionName: projects/474989323251/secrets/WANDB_API_KEY/versions/1
     env: 'WANDB_API_KEY'
-  - versionName: projects/mlops-448220/secrets/KAGGLE_API_KEY/versions/latest
+  - versionName: projects/474989323251/secrets/KAGGLE_API_KEY/versions/1
     env: 'KAGGLE_API_KEY'
-  - versionName: projects/mlops-448220/secrets/KAGGLE_API_USERNAME/versions/latest
-  env: 'KAGGLE_API_USERNAME'
+  - versionName: projects/474989323251/secrets/KAGGLE_API_USERNAME/versions/1
+    env: 'KAGGLE_API_USERNAME'

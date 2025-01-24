@@ -32,7 +32,7 @@ def train(cfg) -> None:
     lr = cfg.lr if cfg.lr != None else cfg.default[model_type].lr
     epochs = cfg.epochs
     seed = cfg.seed
-    project_dir = utils.get_project_dir()  # hydra.utils.get_original_cwd()
+    project_dir = "/gcs/dtumlops-bucket-group35"  # hydra.utils.get_original_cwd()
 
     log = logging.getLogger(__name__)
     log.info(f"{model_type=}, {batch_size=}, {lr=}, {epochs=}, {seed=} {project_dir=}")
