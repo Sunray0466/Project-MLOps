@@ -4,7 +4,7 @@ import altair as alt
 import pandas as pd
 import requests
 
-# from google.cloud import run_v2
+from google.cloud import run_v2
 import streamlit as st
 
 st.markdown(
@@ -44,14 +44,12 @@ st.markdown(
 def get_backend_url():
     """Get the URL of the backend service."""
     parent = "projects/mlops-448220/locations/europe-west1"
-    # parent = "projects/my-personal-mlops-project/locations/europe-west1"
-    # client = run_v2.ServicesClient()
-    # services = client.list_services(parent=parent)
-    # for service in services:
-    #     if service.name.split("/")[-1] == "production-model":
-    #         return service.uri
+    client = run_v2.ServicesClient()
+    services = client.list_services(parent=parent)
+    for service in services:
+        if service.name.split("/")[-1] == "production-model":
+            return service.uri
     name = os.environ.get("backend", None)
-    name = "http://127.0.0.1:8000"
     return name
 
 
