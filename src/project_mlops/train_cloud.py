@@ -10,12 +10,11 @@ import matplotlib.pyplot as plt
 import omegaconf
 import torch
 import typer
+import wandb
 from data_cloud import playing_cards
 from loguru import logger as log
 from model import model_list
 from sklearn.metrics import RocCurveDisplay, accuracy_score, f1_score, precision_score, recall_score
-
-import wandb
 
 # Replace underscores with dashes in CLI arguments
 sys.argv = [arg.replace("_", "-") if "--" in arg else arg for arg in sys.argv]

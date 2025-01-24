@@ -10,12 +10,12 @@ import matplotlib.pyplot as plt
 import omegaconf
 import torch
 import typer
+import wandb
 from loguru import logger as log
 from model import model_list
 from sklearn.metrics import RocCurveDisplay, accuracy_score, f1_score, precision_score, recall_score
 from torch.profiler import ProfilerActivity, profile, tensorboard_trace_handler
 
-import wandb
 from data import playing_cards
 
 # Replace underscores with dashes in CLI arguments
