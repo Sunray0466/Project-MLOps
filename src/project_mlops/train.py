@@ -10,10 +10,10 @@ import matplotlib.pyplot as plt
 import omegaconf
 import torch
 import typer
-import utils
 from loguru import logger as log
 from model import model_list
 from sklearn.metrics import RocCurveDisplay, accuracy_score, f1_score, precision_score, recall_score
+from torch.profiler import ProfilerActivity, profile, tensorboard_trace_handler
 
 import wandb
 from data import playing_cards
@@ -52,8 +52,18 @@ def train(cfg) -> None:
     loss_fn = torch.nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
+    prof = profile(
+        activities=[ProfilerActivity.CPU, ProfilerActivity.CUDA, ProfilerActivity.XPU],
+        record_shapes=True,
+        profile_memory=True,
+        with_flops=True,
+        with_modules=True,
+        on_trace_ready=tensorboard_trace_handler(f"{project_dir}/outputs"),
+    )
+
     # train
     statistics = {"train_loss": [], "train_accuracy": [], "valid_loss": [], "valid_accuracy": []}
+    prof.start()
     for epoch in range(epochs):
         model.train()
 
@@ -130,6 +140,8 @@ def train(cfg) -> None:
         wandb.log({"roc": wandb.Image(plt)})
         plt.close()  # close the plot to avoid memory leaks and overlapping figures
 
+    prof.stop()
+
     final_accuracy = accuracy_score(targets, preds.argmax(dim=1))
     final_precision = precision_score(targets, preds.argmax(dim=1), average="weighted")
     final_recall = recall_score(targets, preds.argmax(dim=1), average="weighted")
@@ -141,6 +153,9 @@ def train(cfg) -> None:
     prefix = current_datetime.strftime("%Y-%m-%d_%H-%M-%S")
     model_save_path = f"{project_dir}/models/{model_type}_{prefix}.pth"
     score_save_path = f"{os.getcwd()}/training_{prefix}.png"
+
+    log.info(prof.key_averages().table(sort_by="cuda_time_total", row_limit=10))
+    # prof.export_chrome_trace(f"{project_dir}/outputs/trace_{prefix}.json")   # Commented out due to errors in consecutive runs.
 
     torch.save(model.state_dict(), model_save_path)  # model_{prefix}.pth
 

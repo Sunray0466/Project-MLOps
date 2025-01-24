@@ -3,9 +3,8 @@ import os
 import altair as alt
 import pandas as pd
 import requests
-
-from google.cloud import run_v2
 import streamlit as st
+from google.cloud import run_v2
 
 st.markdown(
     """

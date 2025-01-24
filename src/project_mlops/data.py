@@ -67,7 +67,6 @@ def preprocess_data() -> None:
 
 
 def playing_cards(project_dir=None) -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
-
     if project_dir is None:
         project_dir = os.getcwd()
 

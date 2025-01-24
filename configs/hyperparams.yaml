@@ -3,7 +3,7 @@
 model: "timmresnet"
 pretrained: False
 batch_size: 64
-epochs: 10
+epochs: 3
 seed: 0
 lr: 
 
