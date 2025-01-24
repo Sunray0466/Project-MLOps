@@ -11,6 +11,7 @@ from prometheus_client import Counter, Histogram, Summary, make_asgi_app
 # Error metrics
 error_counter = Counter("prediction_error", "Number of prediction errors")
 request_counter = Counter("prediction_requests", "Number of prediction requests")
+request_size = Histogram("predict_request_size", "Predict request size by shape")
 request_latency = Histogram("prediction_latency_seconds", "Prediction latency in seconds")
 review_summary = Summary("review_length_summary", "Review length summary")
 
@@ -78,7 +79,9 @@ async def classify_image(img_files: list[UploadFile] = list[File(...)]):
         name_arr = []
         for file in img_files:
             byte_img = await file.read()
-            img = Image.open(io.BytesIO(byte_img)).resize((224, 224))
+            img = Image.open(io.BytesIO(byte_img))
+            request_size.observe(img.size)
+            img = img.resize((224, 224))
             img = ((img - np.mean(img)) / np.std(img)).astype(np.float32)
             img_arr.append(img)
             name_arr.append(file.filename)
