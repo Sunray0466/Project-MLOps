@@ -279,7 +279,19 @@ test_model.py: This file includes seven tests to verify the initialization, forw
 >
 > Answer:
 
---- question 11 fill here ---
+Our continuous integration (CI) setup leverages GitHub Actions to ensure code quality and maintain stability during development. We have structured our CI into a single workflow file, tests.yaml, which focuses on automating the testing process.
+This setup includes:
+Unit Testing: The workflow is triggered on every push or pull_request to the main branch. It runs unit tests located in the tests folder (test_api.py, test_data.py, test_model.py) using pytest, and coverage is calculated with coverage.
+
+Environment Support: Our CI tests on macos-latest with Python 3.11. While the current setup is limited to one operating system and Python version, it can easily be extended to test across multiple platforms (e.g., Windows, Linux) or Python versions by modifying the matrix strategy.
+
+Dependency Management and Caching: Dependencies are installed using pip, with caching enabled to speed up subsequent builds. The pip cache uses setup.py to track dependency changes and ensure up-to-date installations without redundant downloads.
+
+We use the Python package Coverage to generate a code coverage report locally after running tests. This report is then uploaded to Codecov, which works seamlessly with GitHub Actions to integrate coverage insights into our pull requests.
+
+External Resources: The workflow integrates with Kaggle by using environment variables to download required datasets before running tests.
+This streamlined setup ensures consistent, reliable testing and reduces manual effort in maintaining code quality. It can be further extended to include additional features, such as linting (e.g., Ruff), multiple OS testing, or integration tests.
+
 
 ## Running code and tracking experiments
 
