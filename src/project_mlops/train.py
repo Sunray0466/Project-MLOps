@@ -29,7 +29,7 @@ def train(cfg) -> None:
     # var
     model_type = cfg.model
     batch_size = cfg.batch_size
-    lr = cfg.get("lr", cfg.default[model_type].lr)
+    lr = cfg.lr if cfg.lr != None else cfg.default[model_type].lr
     epochs = cfg.epochs
     seed = cfg.seed
     project_dir = utils.get_project_dir()  # hydra.utils.get_original_cwd()
@@ -153,7 +153,8 @@ def train(cfg) -> None:
     artifact.add_file(model_save_path)
     run.log_artifact(artifact)
 
-    wandb.log({"valid_loss": statistics["valid_loss"], "valid_accuracy": statistics["valid_accuracy"]})
+    for vl,va in zip(statistics["valid_loss"],statistics["valid_accuracy"]):
+        wandb.log({"valid_loss": vl, "valid_accuracy": va})
 
     fig, axs = plt.subplots(2, 2, figsize=(15, 5))
     axs = axs.flat
