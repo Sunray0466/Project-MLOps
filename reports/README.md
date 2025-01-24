@@ -232,7 +232,9 @@ test_model.py: This file includes seven tests to verify the initialization, forw
 >
 > Answer:
 
---- question 8 fill here ---
+The total code coverage for the tests is approximately 56%, based on the following: test_model.py covers 100%, test_data.py covers 40%, and test_api.py covers 30%. This indicates that while some parts of the code are thoroughly tested, significant portions remain untested.
+
+Even with 100% code coverage, the code cannot be considered error-free. Code coverage measures how much of the code is executed during tests but does not guarantee that all edge cases, integration issues, or logical errors are addressed. High-quality tests that validate correctness and handle various scenarios are essential for ensuring reliability, not just achieving high coverage.
 
 ### Question 9
 
@@ -291,6 +293,8 @@ We use the Python package Coverage to generate a code coverage report locally af
 
 External Resources: The workflow integrates with Kaggle by using environment variables to download required datasets before running tests.
 This streamlined setup ensures consistent, reliable testing and reduces manual effort in maintaining code quality. It can be further extended to include additional features, such as linting (e.g., Ruff), multiple OS testing, or integration tests.
+
+Link: https://github.com/Sunray0466/Project-MLOps/actions/runs/12956631076/job/36143337658
 
 
 ## Running code and tracking experiments
