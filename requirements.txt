@@ -32,7 +32,6 @@ dvc-gs
 fastapi
 pydantic
 uvicorn
-python-multipart
 requests
 httpx
 locust
@@ -60,6 +59,6 @@ Markdown
 matplotlib
 kaggle
 timm
-wandb
+altair
 #--find-links https://download.pytorch.org/whl/torch_stable.html
 #torch==2.5.1+cu124

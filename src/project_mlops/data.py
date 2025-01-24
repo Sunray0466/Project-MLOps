@@ -5,7 +5,6 @@ import os
 import kaggle as kg
 import numpy as np
 import torch
-import utils
 from torchvision.io import read_image as img2torch
 
 
@@ -69,8 +68,6 @@ def preprocess_data() -> None:
 
 def playing_cards(project_dir=None) -> tuple[torch.utils.data.Dataset, torch.utils.data.Dataset]:
     # Get playing card dataset
-    if not project_dir:
-        project_dir = utils.get_project_dir()
     # if host_location == "google_cloud":
     #     project_dir = "/gcs/dtumlops-bucket-group35"
     # elif host_location == "github":

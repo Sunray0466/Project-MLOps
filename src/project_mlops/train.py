@@ -153,7 +153,7 @@ def train(cfg) -> None:
     artifact.add_file(model_save_path)
     run.log_artifact(artifact)
 
-    for vl,va in zip(statistics["valid_loss"],statistics["valid_accuracy"]):
+    for vl, va in zip(statistics["valid_loss"], statistics["valid_accuracy"]):
         wandb.log({"valid_loss": vl, "valid_accuracy": va})
 
     fig, axs = plt.subplots(2, 2, figsize=(15, 5))

@@ -14,11 +14,11 @@ async def lifespan(app: FastAPI):
     global model_session, input_names, output_names, idx2labels
     # Load onnx model
     provider_list = ["CUDAExecutionProvider", "AzureExecutionProvider", "CPUExecutionProvider"]
-    model_session = rt.InferenceSession("resnet18_model.onnx", providers=provider_list)
+    model_session = rt.InferenceSession("models/cnn_model.onnx", providers=provider_list)
     input_names = [i.name for i in model_session.get_inputs()]
     output_names = [i.name for i in model_session.get_outputs()]
 
-    idx2labels = np.load("label_converter.npy", allow_pickle=True).item()
+    idx2labels = np.load("deployment/label_converter.npy", allow_pickle=True).item()
 
     # run application
     yield
@@ -46,27 +46,36 @@ def predict_image(img) -> list[str]:
 
     # get probabilities
     e_x = np.exp(output - np.max(output))
-    predicted_p = (e_x.T / e_x.sum(axis=1)).max(axis=0)
-    predicted_idx = np.argmax(output, axis=1)
+    predicted_p = e_x.T / e_x.sum(axis=1)
+    predicted_i = np.argsort(predicted_p, axis=0)[::-1][:3]
+    predicted_c = predicted_i[0]
 
-    labels = []
-    for label_idx in predicted_idx:
-        labels.append(idx2labels[label_idx])
-    return predicted_p, labels  # output.softmax(dim=-1)
+    prediction = []
+    prob = {}
+    for i in range(len(predicted_c)):
+        prediction.append(idx2labels[predicted_c[i]])
+        [print(j) for j in predicted_i[:, i]]
+        prob[i] = {idx2labels[int(j)]: round(predicted_p[j, i] * 100, 4) for j in predicted_i[:, i]}
+
+    return prob, prediction  # output.softmax(dim=-1)
 
 
 # FastAPI endpoint for image classification
 @app.post("/classify/")
-async def classify_image(file: UploadFile = File(...)):
+async def classify_image(img_files: list[UploadFile] = list[File(...)]):
     """Classify image endpoint."""
-    try:
+    # try:
+    img_arr = []
+    name_arr = []
+    for file in img_files:
         byte_img = await file.read()
         img = Image.open(io.BytesIO(byte_img)).resize((224, 224))
         img = ((img - np.mean(img)) / np.std(img)).astype(np.float32)
-        if len(img.shape) == 3:
-            img = np.expand_dims(img, axis=0)
-        img = img.transpose(0, 3, 1, 2)  # > batch,3,244,244
-        probabilities, prediction = predict_image(img)
-        return {"filename": file.filename, "prediction": prediction, "probabilities": probabilities.tolist()}
-    except Exception as e:
-        raise HTTPException(status_code=500) from e
+        img_arr.append(img)
+        name_arr.append(file.filename)
+    img_arr = np.asarray(img_arr)
+    img_arr = img_arr.transpose(0, 3, 1, 2)  # > batch,3,244,244
+    probabilities, prediction = predict_image(img_arr)
+    return {"filename": name_arr, "prediction": prediction, "probabilities": probabilities}
+    # except Exception as e:
+    #     raise HTTPException(status_code=500) from e
