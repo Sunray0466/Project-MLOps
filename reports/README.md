@@ -123,7 +123,7 @@ G35
 > **Enter the study number for each member in the group**
 > Answer:
 
-s250069, s204133, s242540
+s250069, s204133, s242540, s242539
 
 ### Question 3
 > **A requirement to the project is that you include a third-party package not covered in the course. What framework**
@@ -325,13 +325,15 @@ Here is a link to one of our Dockerfiles: https://github.com/Sunray0466/Project-
 >
 > Recommended answer length: 100-200 words.
 >
-> Example:
-> *Debugging method was dependent on group member. Some just used ... and others used ... . We did a single profiling*
-> *run of our main code at some point that showed ...*
->
 > Answer:
 
---- question 16 fill here ---
+We generally did our debugging with looking at the logged variables (or good old print statements if you like). It seemed to be mostly enough for the problems we had encountered. Since our dataset and model (resnet18) were not very large, we were able to work with low number of epochs and a low total training time (less than a minute per epoch on an Apple Silicon Macbook Pro). We added Pytorch profiling at the end though. You can see some relevant screenshots below.
+
+![my_image](figures/console.png)
+
+![my_image](figures/overv.png)
+
+![my_image](figures/memory.png)
 
 ## Working in the cloud
 
