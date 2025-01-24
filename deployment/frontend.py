@@ -4,8 +4,8 @@ import altair as alt
 import pandas as pd
 import requests
 import streamlit as st
-from google.cloud import run_v2
-
+# from google.cloud import run_v2
+st.set_page_config(page_title="♠️♥️Card Classifier♦️♣️")
 st.markdown(
     """
 <style>

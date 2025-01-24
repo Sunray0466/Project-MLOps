@@ -116,18 +116,18 @@ will check the repositories and the code to verify your answers.
 ### Question 1
 > **Enter the group number you signed up on <learn.inside.dtu.dk>**
 >
-Answer:35
+Answer: G35
 
 ### Question 2
 > **Enter the study number for each member in the group**
 >
 > Example:
 >
-> *s250069, sXXXXXX, sXXXXXX*
+> *sXXXXXX, sXXXXXX, sXXXXXX*
 >
 > Answer:
 
---- question 2 fill here ---
+s250069, s204133, s______, s______
 
 ### Question 3
 > **A requirement to the project is that you include a third-party package not covered in the course. What framework**
@@ -172,7 +172,9 @@ We managed dependencies in our project using a combination of a requirements.txt
 >
 > Answer:
 
---- question 5 fill here ---
+With cookiecutter template, we copied the course template and have since then filled out most of the existing folders except the notebook-folder. All folders were kept and none were deleted, but new additions have also been made. The *.dvc* for data control, *.ruff* for formatting, *deployment* for our back- and frontend, and *outputs* and *wandb* for hydra and weights and biases, which keeps track of our hyperparameters.
+
+The cookiecutter overall made it easy for us to set up a general structure for our work without hassle and it was easy to figure out where we should go to to add new files and folders without later moving them again. 
 
 ### Question 6
 
@@ -306,7 +308,11 @@ Link: https://github.com/Sunray0466/Project-MLOps/actions/runs/12956631076/job/3
 >
 > Answer:
 
---- question 12 fill here ---
+At first we had "typer" to send arguments to our script which works fine. We then introduced Hydra which did not work with typer and we ended up with discarding typer. Hydra gave us a lot of issues as it apparently changes the working directory which we found out *much later*. After fixing these issues Hydra would then accept our arguments as well as log our parameters, arguments, performance and so on which works great. And then we tried using WANDB... We then had a lot of troubleshooting until we finally found out how we can combine both of them to get the best of both world.
+
+In order to execute our training we could either run:<br>
+`python .\src\project_mlops\train.py lr=0.02 batch_size=10` or `wandb sweep .\configs\sweep.yaml` followed by the command sweep gives.
+
 
 ### Question 13
 
@@ -444,7 +450,8 @@ Despite this limitation, Vertex AI allowed us to register jobs and run training 
 >
 > Answer:
 
---- question 23 fill here ---
+We managed to make an working api with the use of FastAPI for setup and uvicorn for hosting a local server for testing said api. Setting up the FastAPI was smooth sailing due to the code provided by the course, but trying to extend the functionality gave a lot of headaches as soo many thing kept going wrong. The FastAPI documentation provided great help but was still lacking in some aspect such as what exactly the "UploadFile" class is as an object as it also could be considered as a bytes at some instances. And then the uploaded image could also not be .read() again after it was read once which gave issue later when we were implementing the frontend. 
+In the end we managed to solve theses issues and made a classifier endpoint which receives one or multiple card images and then outputs the predicted card(s) as well as the top three predictions for each card images and their probabilities. We also utilised the FastAPI lifespan argument to make a sort of init where we could load our model and nessesary files once and be used throughout the runtime which made the code a lot faster.
 
 ### Question 24
 
@@ -460,7 +467,7 @@ Despite this limitation, Vertex AI allowed us to register jobs and run training 
 >
 > Answer:
 
---- question 24 fill here ---
+By utilizing the uvicorn we could easily host a local server to test our api for bugs and features. Adding the `--reload` argument made the whole testing a lot easier as we didn't need to re-host the server each time we made changes to the file which was a great help. After writing our api, we would build it into a docker image which then gets uploaded to our gcloud run which would deploy our api and we could then use `/docs` from FastAPI to make sure that it all works (from another computer).
 
 ### Question 25
 
@@ -513,7 +520,7 @@ Overall, working in the cloud was a seamless and exciting experience. The abilit
 >
 > Answer:
 
---- question 28 fill here ---
+We implemented a simple frontend for our API (<a href="https://frontend-474989323251.europe-west1.run.app/">https://frontend-474989323251.europe-west1.run.app/</a>). This had a lot of trouble in the beginning as it was "though" it was incompatible with our backend (until we realized that it also accepted bytes data) or that reading a "uploaded file" once would make it unable to be read again. After fixing this issue, we spend a lot of time to make the UI more appealing, which we in the end are satisfied with. We would then try to add API monitoring with the "prometheus-client" package but in the end only had time to implement it in the files and not on the cloud (`/metrics` is still available).
 
 ### Question 29
 
