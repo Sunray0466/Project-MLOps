@@ -452,7 +452,7 @@ We did not manage to implement monitoring in our application. However, monitorin
 > **you think about working in the cloud?**
 > Answer:
 
- We ended up with $42.82 in credits during the project. The most expensive parts of the project were training our model with Vertex AI and storing data in the cloud. Vertex AI costs were primarily due to running multiple experiments and managing job workflows, while cloud storage expenses arose from storing datasets and other resources needed for the project.
+We ended up with $42.82 in credits during the project. The most expensive parts of the project were training our model with Vertex AI and storing data in the cloud. Vertex AI costs were primarily due to running multiple experiments and managing job workflows, while cloud storage expenses arose from storing datasets and other resources needed for the project.
 
 Overall, working in the cloud was a seamless and exciting experience. The ability to easily configure and adjust services offered a high level of flexibility, allowing us to adapt to project requirements quickly. The scalability of cloud services made it convenient to handle resource-intensive tasks without worrying about hardware limitations. Additionally, the integration between GCP services significantly streamlined our workflow. While cost management is essential, especially for resource-heavy tasks, the benefits of efficiency, scalability, and ease of use made working in the cloud a worthwhile and enjoyable experience.
 
@@ -493,7 +493,7 @@ Overall, we have used GCP’s scalability and integration while maintaining flex
 >
 > Answer:
 
---- question 30 fill here ---
+The challenges we faced throughout the project was issues with working directory, unit test which kept falling due to data being accessed differently between github and the gcloud, making the frontend and backend communicate with each other (both local and on the cloud) and all the other problems where the terminal was involved in some way or other. Out of these, the biggest challenge we faced would be the issues with working directory. Due to our code being spread out on multiple platforms such as local machines, gcloud bucket, docker, wandb etc. we would kept getting errors, because either our data wasn't available or our other python files were not found and the code crashes. This also affects docker building as it needs the correct location, gcloud as it uses buckets instead to acquire our data, getting the correct model for our code etc.
 
 ### Question 31
 
@@ -501,10 +501,13 @@ Overall, we have used GCP’s scalability and integration while maintaining flex
 > **make sure all members contributed actively to the project**
 > Answer:
 
-1. Student s250069 was primarily responsible for continuous integration and testing throughout the project.
+- Student s250069 was primarily responsible for continuous integration and testing throughout the project.
 
 I set up the initial continuous integration (CI) pipeline on the GitHub repository and progressively enhanced it by adding caching, multi-OS, and multi-version testing for Python and PyTorch. I integrated a linting step into the CI pipeline and configured pre-commit hooks to enforce code quality standards. Additionally, I created workflows that trigger CI runs when data changes or when updates are made to the model registry. In terms of testing, I developed unit tests for the data processing components and model construction, ensuring robust coverage of the pipeline. I calculated code coverage and integrated it into the GitHub Actions workflow to track progress. I also wrote API tests for our application and set up dedicated CI workflows to validate API functionality. This comprehensive approach to CI and testing significantly improved the reliability and maintainability of the project.
 
-2. Student s242540 was primarily responsible for creating docker images and setup cloud environment for training, deployment.
+- Student s242540 was primarily responsible for creating docker images and setup cloud environment for training, deployment.
 
 I created all services in the cloud to set them up for our experimentation and deployment. I created trigger to Github to create Docker images automatically. I setup Vertex AI yaml files and quota arrangements. I deployed our model, frontend and backend to cloud also. To sum up, I did everything related to cloud work.
+
+- Student s204133 was responsible with setting up the git repository with cookiecutter template, using Hydra and the API for both backend and frontend.
+
