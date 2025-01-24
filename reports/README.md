@@ -509,5 +509,10 @@ I set up the initial continuous integration (CI) pipeline on the GitHub reposito
 
 I created all services in the cloud to set them up for our experimentation and deployment. I created trigger to Github to create Docker images automatically. I setup Vertex AI yaml files and quota arrangements. I deployed our model, frontend and backend to cloud also. To sum up, I did everything related to cloud work.
 
-- Student s204133 was responsible with setting up the git repository with cookiecutter template, using Hydra and the API for both backend and frontend.
+3. Student s242539 was primarily responsible for development of pre-trained model, integration of Weights & Biases and training the data
 
+I integrated the Resnet-18 pre-trained model to our project and trained last layers. I spend most of the time to integrate W&B to our project up and running. I worked on training the data, set up hyperparameters for the experimentation and seamlessly saved our model and the corresponding performance metrics to W&B.
+
+4. Student s204133 was primarily responsible for integration of hydra, development of backend, frontend and production of ONNX for deployment
+
+I integrated hydra to our project to work seamlessly. Most of my time is spent on developing ONNX model, Fast-API generation and frontend implementation. I greatly helped to deploy the developments on cloud.
