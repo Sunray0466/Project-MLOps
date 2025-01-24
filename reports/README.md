@@ -132,8 +132,8 @@ s250069, s204133, s242540, s242539
 > Recommended answer length: 100-200 words.
 >
 > Answer:
->
->Among the many different tools we used, PyTorch Image Models (TIMM) and Kaggle were the ones that were not directly covered by the course material. We used Kaggle to browse through many datasets, and to find a dataset that is both intriguing to work on and managable in size. We wanted to work on an image classification project and we chose to work with the playing cards dateset, wihich can be found by [clicking here](https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification/data). The dataset has 7624 training images, 265 test images and 265 validation images from 53 classes (52 normal playing cards + 1 joker).
+
+Among the many different tools we used, PyTorch Image Models (TIMM) and Kaggle were the ones that were not directly covered by the course material. We used Kaggle to browse through many datasets, and to find a dataset that is both intriguing to work on and managable in size. We wanted to work on an image classification project and we chose to work with the playing cards dateset, wihich can be found by [clicking here](https://www.kaggle.com/datasets/gpiosenka/cards-image-datasetclassification/data). The dataset has 7624 training images, 265 test images and 265 validation images from 53 classes (52 normal playing cards + 1 joker).
 >
 >We used TIMM framework to get a pretrained ResNet18 model in PyTorch, and fine-tune it. We were able to freeze its initial layers and run training on a few of the layers from the end. This enabled us to get a good performing model with relatively short training times. This enabled us to more easily focus to the operations related parts of this MLOps project.
 
@@ -205,12 +205,12 @@ Even with 100% code coverage, the code cannot be considered error-free. Code cov
 > Recommended answer length: 100-200 words.
 >
 > Answer:
-> 
->In our project, we tried both PRs and branches as much as we could. We tried to split the workload of the project, and work on respective branches. We tried to utilize the PRs while merging the feature branches to the main branch. It was sometimes okay to push our individual changes directly to main. However, in bigger projects benefits of branches and PRs surpass their additional overhead work.
->
->Seperate branches to make development on seperate features enables us to make changes on our isolated instant of the program. This enables us to work on different aspects of the project without interfering with each other's work. This enables us to alleviate code conflicts in bigger projects, and keeps our version history clear and tidy. For example, If we choose to squash the commits in a feature branch while merging it to main branch, we keep our main branch history clear and easy-to-read.  
->
->Using PRs enables relevant people to engage in code review, and helps them to collaborate. It also makes it easier to inspect the changes we are about to introduce to the target branch. This can be useful to prevent potential catastrophes in big and complex projects.
+
+In our project, we tried both PRs and branches as much as we could. We tried to split the workload of the project, and work on respective branches. We tried to utilize the PRs while merging the feature branches to the main branch. It was sometimes okay to push our individual changes directly to main. However, in bigger projects benefits of branches and PRs surpass their additional overhead work.
+
+Seperate branches to make development on seperate features enables us to make changes on our isolated instant of the program. This enables us to work on different aspects of the project without interfering with each other's work. This enables us to alleviate code conflicts in bigger projects, and keeps our version history clear and tidy. For example, If we choose to squash the commits in a feature branch while merging it to main branch, we keep our main branch history clear and easy-to-read.  
+
+Using PRs enables relevant people to engage in code review, and helps them to collaborate. It also makes it easier to inspect the changes we are about to introduce to the target branch. This can be useful to prevent potential catastrophes in big and complex projects.
 
 
 ### Question 10
@@ -270,14 +270,11 @@ In order to execute our training we could either run:<br>
 >
 > Recommended answer length: 100-200 words.
 >
-> Example:
-> *We made use of config files. Whenever an experiment is run the following happens: ... . To reproduce an experiment*
-> *one would have to do ...*
->
 > Answer:
-> We used Hydra's config file to feed hyperparameters to our 'train.py' training file. This way we do not have to manually give command-line arguments every time we run the training file. We used 'logging' package to write some of our console prints to seperate files each time we run training. This way we can check the results of past runs and have look at the hyperparameters we used then. This is also amplified with logging some training metrics to WandB and saving a copy of the trained model there. We also used torch.manual_seed() function of PyTorch to lock in the randomness between different training runs. This makes it easier to see the effects of other aspects and parameters on training performance 
->
->Another important aspect of reproducibility is using docker images together with virtual environments and requirement.txt files. This way we can replicate our local runs in cloud deployments, without breaking a sweat about hardware and operating system differences.
+
+We used Hydra's config file to feed hyperparameters to our 'train.py' training file. This way we do not have to manually give command-line arguments every time we run the training file. We used 'logging' package to write some of our console prints to seperate files each time we run training. This way we can check the results of past runs and have look at the hyperparameters we used then. This is also amplified with logging some training metrics to WandB and saving a copy of the trained model there. We also used torch.manual_seed() function of PyTorch to lock in the randomness between different training runs. This makes it easier to see the effects of other aspects and parameters on training performance 
+
+Another important aspect of reproducibility is using docker images together with virtual environments and requirement.txt files. This way we can replicate our local runs in cloud deployments, without breaking a sweat about hardware and operating system differences.
 
 ### Question 14
 
@@ -290,17 +287,17 @@ In order to execute our training we could either run:<br>
 >
 > Answer:
 
-![my_image](figures/pb-133-1.png)
+[Metrics](figures/pb-133-1.png)
 
 In the image above we see important training metrics such as train loss, train accuracy, validation loss and validatilon accuracy. These enable us to track the model's performance throughout the training. Using the validation set is especially important, because we need to check the model performance with data that is not used in parameter optimization. Monitoring validation and training together gives us an idea on whether it is overfitting, and whether the gradients are behaving well throughout training. 
 
-![my_image](figures/pb-133-2.png)
+[Sample images](figures/pb-133-2.png)
 
 In the image above, we see some sample images used in training. It enables us to see that we are not using completely irrelevent and corrupted images. 
 
 We also see the graphs of some external metrics throughout training, such as GPU utilization and power consumption. In large scale projects power consumption might be an important aspect of the running costs ıf the project. CPU utilization can give us an idea about the model complexity and batch sizes we can work with.
 
-![my_image](figures/sweep.png)
+[Hyperparameter sweep](figures/sweep.png)
 
 In the image above we see some metrics coming from a hyperparameter sweep. We can see how it behaves with different sets of hyperparameters during training. Especially the plot at the bottom can be very useful. It enables us to see the final validation accuracies of different runs with different hyperparameters, in a single plot. 
 
