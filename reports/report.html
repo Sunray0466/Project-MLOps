@@ -6,7 +6,7 @@ like:</p>
 auto-generated at the end of the course. For questions where you are asked to include images, start by adding the image
 to the <code>figures</code> subfolder (please only use <code>.png</code>, <code>.jpg</code> or <code>.jpeg</code>) and then add the following code in your answer:</p>
 <p><code>markdown
-![my_image](figures/&lt;image&gt;.&lt;extension&gt;)</code></p>
+[my_image](figures/&lt;image&gt;.&lt;extension&gt;)</code></p>
 <p>In addition to this markdown file, we also provide the <code>report.py</code> script that provides two utility functions:</p>
 <p>Running:</p>
 <p><code>bash
@@ -251,9 +251,9 @@ Answer:</p>
 <p>Answer:</p>
 </blockquote>
 <p>We generally did our debugging with looking at the logged variables (or good old print statements if you like). It seemed to be mostly enough for the problems we had encountered. Since our dataset and model (resnet18) were not very large, we were able to work with low number of epochs and a low total training time (less than a minute per epoch on an Apple Silicon Macbook Pro). We added Pytorch profiling at the end though. You can see some relevant screenshots below.</p>
-<p><img alt="my_image" src="figures/console.png" /></p>
-<p><img alt="my_image" src="figures/overv.png" /></p>
-<p><img alt="my_image" src="figures/memory.png" /></p>
+<p><a href="figures/console.png">console</a><br></p>
+<p><a href="figures/overv.png">overv</a><br></p>
+<p><a href="figures/memory.png">memory</a></p>
 <h2>Working in the cloud</h2>
 <blockquote>
 <p>In the following section we would like to know more about your experience when developing in the cloud.</p>
@@ -283,7 +283,7 @@ Answer:</p>
 <strong>You can take inspiration from <a href="figures/bucket.png">this figure</a>.</strong></p>
 <p>Answer:</p>
 </blockquote>
-<p><a href="figures/overall_buckets.png">The overview of the all buckets</a>
+<p><a href="figures/overall_buckets.png">The overview of the all buckets</a><br>
 <a href="figures/model_folder.png">Models folder and dataset</a></p>
 <h3>Question 20</h3>
 <blockquote>
@@ -291,7 +291,7 @@ Answer:</p>
 <strong>stored. You can take inspiration from <a href="figures/registry.png">this figure</a>.</strong></p>
 <p>Answer:</p>
 </blockquote>
-<p><a href="figures/overall_registry.png">Overview of the registry</a>
+<p><a href="figures/overall_registry.png">Overview of the registry</a><br>
 <a href="figures/training_docker.png">Docker files for training purposes</a></p>
 <h3>Question 21</h3>
 <blockquote>
@@ -299,7 +299,7 @@ Answer:</p>
 <strong>your project. You can take inspiration from <a href="figures/build.png">this figure</a>.</strong></p>
 <p>Answer:</p>
 </blockquote>
-<p><a href="figures/cloud_build.png">Cloud Build History</a>
+<p><a href="figures/cloud_build.png">Cloud Build History</a><br>
 <a href="figures/cloud_build_cont.png">Continued</a></p>
 <h3>Question 22</h3>
 <blockquote>

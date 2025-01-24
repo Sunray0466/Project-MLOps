@@ -10,7 +10,7 @@ auto-generated at the end of the course. For questions where you are asked to in
 to the `figures` subfolder (please only use `.png`, `.jpg` or `.jpeg`) and then add the following code in your answer:
 
 ```markdown
-![my_image](figures/<image>.<extension>)
+[my_image](figures/<image>.<extension>)
 ```
 
 In addition to this markdown file, we also provide the `report.py` script that provides two utility functions:
@@ -317,11 +317,11 @@ Here is a link to one of our Dockerfiles: https://github.com/Sunray0466/Project-
 
 We generally did our debugging with looking at the logged variables (or good old print statements if you like). It seemed to be mostly enough for the problems we had encountered. Since our dataset and model (resnet18) were not very large, we were able to work with low number of epochs and a low total training time (less than a minute per epoch on an Apple Silicon Macbook Pro). We added Pytorch profiling at the end though. You can see some relevant screenshots below.
 
-![my_image](figures/console.png)
+[console](figures/console.png)<br>
 
-![my_image](figures/overv.png)
+[overv](figures/overv.png)<br>
 
-![my_image](figures/memory.png)
+[memory](figures/memory.png)
 
 ## Working in the cloud
 
@@ -354,7 +354,7 @@ We initially used GCP’s Compute Engine to run small sample Docker images, help
 >
 > Answer:
 
-[The overview of the all buckets](figures/overall_buckets.png)
+[The overview of the all buckets](figures/overall_buckets.png)<br>
 [Models folder and dataset](figures/model_folder.png)
 
 ### Question 20
@@ -364,7 +364,7 @@ We initially used GCP’s Compute Engine to run small sample Docker images, help
 >
 > Answer:
 
-[Overview of the registry](figures/overall_registry.png)
+[Overview of the registry](figures/overall_registry.png)<br>
 [Docker files for training purposes](figures/training_docker.png)
 
 ### Question 21
@@ -374,7 +374,7 @@ We initially used GCP’s Compute Engine to run small sample Docker images, help
 >
 > Answer:
 
-[Cloud Build History](figures/cloud_build.png)
+[Cloud Build History](figures/cloud_build.png)<br>
 [Continued](figures/cloud_build_cont.png)
 
 ### Question 22
