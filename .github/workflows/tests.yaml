@@ -52,4 +52,8 @@ jobs:
           KAGGLE_USERNAME: berkayakbulut
           KAGGLE_KEY: 86952cf72fda508a8877018b9e5e739e
         run: |
+          pip install coverage
           coverage run -m pytest tests/
+
+      - name: Upload Coverage to Codecov
+        uses: codecov/codecov-action@v2

@@ -116,16 +116,14 @@ will check the repositories and the code to verify your answers.
 ### Question 1
 > **Enter the group number you signed up on <learn.inside.dtu.dk>**
 >
-> Answer:
-
---- question 1 fill here ---
+Answer:35
 
 ### Question 2
 > **Enter the study number for each member in the group**
 >
 > Example:
 >
-> *sXXXXXX, sXXXXXX, sXXXXXX*
+> *s250069, sXXXXXX, sXXXXXX*
 >
 > Answer:
 
@@ -194,7 +192,10 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 6 fill here ---
+We used Ruff for linting and formatting in our Python project. Running Ruff checks and formatting during development helps maintain good code quality by enforcing consistent styling and catching potential issues early, ensuring the code remains readable, maintainable, and aligned with best practices. Integrating Ruff into a pre-commit hook made it easy to spot and fix mistakes before committing, which prevented problematic changes from reaching the shared codebase and minimized the time spent on code reviews. Additionally, including Ruff in our GitHub Actions or continuous integration (CI) pipeline provided an extra layer of validation by ensuring that all code merged into production adhered to the established standards and was free of basic errors. This end-to-end integration helped us avoid regressions, maintain clean code, and improve overall efficiency in the development process.
+
+In larger projects, these concepts are essential because inconsistencies in coding style can make the code harder to read, understand, and maintain. Proper linting ensures that the code follows a shared standard, making collaboration smoother and reducing the chances of bugs slipping through. For example, Ruff's speed and ability to handle large codebases efficiently enabled us to enforce rules quickly, saving time and keeping our project clean as it scaled.
+
 
 ## Version control
 
@@ -213,7 +214,10 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 7 fill here ---
+In total, we implemented 13 tests across three test files: 'test_api.py', 'test_data.py', and 'test_model.py', ensuring functionality, reliability, and consistency in our codebase. We used pytest for testing, as it provides a robust framework for writing and running tests efficiently. Additionally, we integrated these tests into GitHub Actions to automate testing for every pull request, ensuring continuous integration and maintaining high code quality throughout the development process.
+test_api.py: This file includes three tests to validate the FastAPI endpoints for our image classification API. We test the root endpoint to confirm it responds correctly, ensure invalid file uploads return the expected error status, and verify the proper functionality of the '/classify/' endpoint using an actual image. These tests ensure that the API behaves as intended and handles edge cases gracefully.
+test_data.py: This file focuses on testing our Kaggle playing cards dataset. It validates dataset sizes, checks image shapes, ensures all 53 card classes are represented, and verifies target values remain within the expected range. These tests guarantee the integrity and usability of the dataset for training and evaluation.
+test_model.py: This file includes seven tests to verify the initialization, forward pass, and architecture of our models. It ensures that models handle inputs correctly, contain the expected components (e.g., dropout layers), and use pretrained weights appropriately. It also validates parameter counts and tests for handling invalid input shapes.
 
 ### Question 8
 
@@ -275,7 +279,19 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 11 fill here ---
+Our continuous integration (CI) setup leverages GitHub Actions to ensure code quality and maintain stability during development. We have structured our CI into a single workflow file, tests.yaml, which focuses on automating the testing process.
+This setup includes:
+Unit Testing: The workflow is triggered on every push or pull_request to the main branch. It runs unit tests located in the tests folder (test_api.py, test_data.py, test_model.py) using pytest, and coverage is calculated with coverage.
+
+Environment Support: Our CI tests on macos-latest with Python 3.11. While the current setup is limited to one operating system and Python version, it can easily be extended to test across multiple platforms (e.g., Windows, Linux) or Python versions by modifying the matrix strategy.
+
+Dependency Management and Caching: Dependencies are installed using pip, with caching enabled to speed up subsequent builds. The pip cache uses setup.py to track dependency changes and ensure up-to-date installations without redundant downloads.
+
+We use the Python package Coverage to generate a code coverage report locally after running tests. This report is then uploaded to Codecov, which works seamlessly with GitHub Actions to integrate coverage insights into our pull requests.
+
+External Resources: The workflow integrates with Kaggle by using environment variables to download required datasets before running tests.
+This streamlined setup ensures consistent, reliable testing and reduces manual effort in maintaining code quality. It can be further extended to include additional features, such as linting (e.g., Ruff), multiple OS testing, or integration tests.
+
 
 ## Running code and tracking experiments
 
@@ -478,7 +494,8 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 25 fill here ---
+For unit testing, we used pytest to test the FastAPI endpoints. We validated the root endpoint's response and tested the image classification endpoint by sending valid and invalid files. The valid test ensured the correct prediction and probabilities were returned, while the invalid test confirmed proper error handling for non-image files.
+For load testing, we would use the Locust framework, which allows simulating many users interacting with the application. It's easy to get started with and integrates well into our CI/CD pipeline. Using Locust, we would create tests to simulate multiple requests to the /classify/ endpoint, helping identify performance bottlenecks and assess the service’s behavior under heavy load.
 
 ### Question 26
 
@@ -576,4 +593,6 @@ will check the repositories and the code to verify your answers.
 >
 > Answer:
 
---- question 31 fill here ---
+1. Student s250069 was primarily responsible for continuous integration and testing throughout the project.
+
+I set up the initial continuous integration (CI) pipeline on the GitHub repository and progressively enhanced it by adding caching, multi-OS, and multi-version testing for Python and PyTorch. I integrated a linting step into the CI pipeline and configured pre-commit hooks to enforce code quality standards. Additionally, I created workflows that trigger CI runs when data changes or when updates are made to the model registry. In terms of testing, I developed unit tests for the data processing components and model construction, ensuring robust coverage of the pipeline. I calculated code coverage and integrated it into the GitHub Actions workflow to track progress. I also wrote API tests for our application and set up dedicated CI workflows to validate API functionality. This comprehensive approach to CI and testing significantly improved the reliability and maintainability of the project.
