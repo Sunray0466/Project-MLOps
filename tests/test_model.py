@@ -2,21 +2,23 @@ import torch
 from torch import nn
 from transformers import ResNetForImageClassification
 
-from project_mlops.model import ModelConvolution, hugging_face_resnet
+from project_mlops.model import CNN, HuggingfaceResnet, TimmResNet
 
 
 def test_model_initialization():
     """Test if the models can be initialized without errors."""
-    model = ModelConvolution()
-    assert isinstance(model, nn.Module), "ModelConvolution should be an instance of nn.Module."
+    modelCNN = CNN()
+    modelTimm = TimmResNet()
+    modelHuggingface = HuggingfaceResnet()
 
-    resnet_model = hugging_face_resnet()
-    assert isinstance(resnet_model, nn.Module), "ResNet model should be an instance of nn.Module."
+    assert isinstance(modelCNN, nn.Module), "ModelCNN should be an instance of nn.Module."
+    assert isinstance(modelTimm, nn.Module), "ModelTimm should be an instance of nn.Module."
+    assert isinstance(modelHuggingface, nn.Module), "ModelHuggingface should be an instance of nn.Module."
 
 
 def test_forward_pass_convolution():
     """Test the forward pass of the ModelConvolution."""
-    model = ModelConvolution()
+    model = TimmResNet()
     dummy_input = torch.randn(1, 3, 224, 224)  # Batch size of 1, 3 channels (RGB), 224x224 image
     output = model(dummy_input)
     assert output.shape == (1, 53), f"Expected output shape (1, 53), but got {output.shape}."
@@ -24,7 +26,7 @@ def test_forward_pass_convolution():
 
 def test_forward_pass_resnet():
     """Test the forward pass of the Hugging Face ResNet model."""
-    resnet_model = hugging_face_resnet()
+    resnet_model = TimmResNet()
     dummy_input = torch.randn(1, 3, 224, 224)  # Batch size of 1, 3 channels (RGB), 224x224 image
     output = resnet_model(dummy_input).logits  # Access logits for classification
     assert output.shape == (1, 53), f"Expected output shape (1, 53), but got {output.shape}."
@@ -32,21 +34,21 @@ def test_forward_pass_resnet():
 
 def test_parameter_count():
     """Test if ModelConvolution has trainable parameters."""
-    model = ModelConvolution()
+    model = TimmResNet()
     num_params = sum(p.numel() for p in model.parameters() if p.requires_grad)
     assert num_params > 0, "ModelConvolution should have trainable parameters."
 
 
 def test_dropout_layers():
     """Test if ModelConvolution has the correct number of dropout layers."""
-    model = ModelConvolution()
+    model = TimmResNet()
     dropout_layers = [module for module in model.modules() if isinstance(module, nn.Dropout)]
     assert len(dropout_layers) == 3, f"Expected 3 Dropout layers, but found {len(dropout_layers)}."
 
 
 def test_resnet_pretrained_weights():
     """Test if the Hugging Face ResNet model loads pretrained weights correctly."""
-    resnet_model = hugging_face_resnet()
+    resnet_model = TimmResNet()
     assert hasattr(resnet_model, "state_dict"), "Hugging Face ResNet should have a state_dict method."
     state_dict = resnet_model.state_dict()
     assert len(state_dict) > 0, "State dict should not be empty."
@@ -54,7 +56,7 @@ def test_resnet_pretrained_weights():
 
 def test_invalid_input_shape():
     """Test if ModelConvolution raises an error for invalid input shapes."""
-    model = ModelConvolution()
+    model = TimmResNet()
     invalid_input = torch.randn(1, 1, 224, 224)  # Only 1 channel instead of 3
     try:
         _ = model(invalid_input)
