@@ -160,7 +160,7 @@ We managed dependencies in our project using a combination of a requirements.txt
 
 With cookiecutter template, we copied the course template and have since then filled out most of the existing folders except the notebook-folder. All folders were kept and none were deleted, but new additions have also been made. The *.dvc* for data control, *.ruff* for formatting, *deployment* for our back- and frontend, and *outputs* and *wandb* for hydra and weights and biases, which keeps track of our hyperparameters.
 
-The cookiecutter overall made it easy for us to set up a general structure for our work without hassle and it was easy to figure out where we should go to to add new files and folders without later moving them again. 
+The cookiecutter overall made it easy for us to set up a general structure for our work without hassle and it was easy to figure out where we should go to to add new files and folders without later moving them again.
 
 ### Question 6
 
@@ -219,7 +219,7 @@ Even with 100% code coverage, the code cannot be considered error-free. Code cov
 > **control of your data. If no, explain a case where it would be beneficial to have version control of your data.**
 > Answer:
 
-We used DVC in our project to manage data, but it didn’t significantly improve our workflow since our dataset was static and downloaded from Kaggle. DVC's main benefits, like tracking evolving datasets or maintaining different versions, weren’t applicable in our case.  
+We used DVC in our project to manage data, but it didn’t significantly improve our workflow since our dataset was static and downloaded from Kaggle. DVC's main benefits, like tracking evolving datasets or maintaining different versions, weren’t applicable in our case.
 
 However, DVC would be highly beneficial in scenarios involving dynamic datasets, such as when a team iteratively collects and preprocesses data. For example, in a machine learning project with continuously updated data (e.g. IoT sensor data), DVC enables efficient tracking of data changes. It creates a synchronization across team members, and reproducibility by linking data to specific model versions, ensuring consistency in experiments and deployments.
 
@@ -333,12 +333,12 @@ Here is a link to one of our Dockerfiles: https://github.com/Sunray0466/Project-
 > **List all the GCP services that you made use of in your project and shortly explain what each service does?**
 > Answer:
 
-In our project, we utilized several GCP services to streamline development and deployment. 
+In our project, we utilized several GCP services to streamline development and deployment.
 Artifact Registry was used to store and manage container images, ensuring version control and seamless integration with other GCP tools
-Cloud Build automated our CI/CD pipelines, allowing us to efficiently build, test, and deploy containerized applications. 
-Also, we used Secret Manager to handle sensitive information securely and manage API keys and other credentials. 
-We have also used Vertex AI for training, managing, and deploying machine learning models at scale. 
-We stored our datasets and static files (model files) in Cloud Storage. 
+Cloud Build automated our CI/CD pipelines, allowing us to efficiently build, test, and deploy containerized applications.
+Also, we used Secret Manager to handle sensitive information securely and manage API keys and other credentials.
+We have also used Vertex AI for training, managing, and deploying machine learning models at scale.
+We stored our datasets and static files (model files) in Cloud Storage.
 Finally, we deployed our containerized FastAPI and Streamlit implementations using Cloud Run, a serverless platform that automatically scaled based on demand.
 ### Question 18
 
@@ -398,7 +398,7 @@ Despite this limitation, Vertex AI allowed us to register jobs and run training 
 > **not, explain how you would do it.**
 > Answer:
 
-We managed to make an working api with the use of FastAPI for setup and uvicorn for hosting a local server for testing said api. Setting up the FastAPI was smooth sailing due to the code provided by the course, but trying to extend the functionality gave a lot of headaches as soo many thing kept going wrong. The FastAPI documentation provided great help but was still lacking in some aspect such as what exactly the "UploadFile" class is as an object as it also could be considered as a bytes at some instances. And then the uploaded image could also not be .read() again after it was read once which gave issue later when we were implementing the frontend. 
+We managed to make an working api with the use of FastAPI for setup and uvicorn for hosting a local server for testing said api. Setting up the FastAPI was smooth sailing due to the code provided by the course, but trying to extend the functionality gave a lot of headaches as soo many thing kept going wrong. The FastAPI documentation provided great help but was still lacking in some aspect such as what exactly the "UploadFile" class is as an object as it also could be considered as a bytes at some instances. And then the uploaded image could also not be .read() again after it was read once which gave issue later when we were implementing the frontend.
 In the end we managed to solve theses issues and made a classifier endpoint which receives one or multiple card images and then outputs the predicted card(s) as well as the top three predictions for each card images and their probabilities. We also utilised the FastAPI lifespan argument to make a sort of init where we could load our model and nessesary files once and be used throughout the runtime which made the code a lot faster.
 
 ### Question 24
@@ -431,7 +431,7 @@ For load testing, we would use the Locust framework, which allows simulating man
 >
 > Answer:
 
---- question 26 fill here ---
+We did not manage to implement monitoring in our application. However, monitoring would be particularly beneficial for our use case, which involves predicting playing cards from images. It would allow us to track metrics like model accuracy, inference time, and response latency, helping us identify when the model starts making incorrect predictions or experiences performance issues. Monitoring could also highlight edge cases, such as poor-quality images or unusual card orientations, which could be used to improve the model. Furthermore, by analyzing user interactions, we could refine the model and enhance the user experience. Alerts for issues like low confidence scores or repeated prediction failures would help ensure quick identification and resolution of problems, ensuring the reliability and longevity of the application.
 
 ## Overall discussion of project
 
@@ -498,4 +498,4 @@ I set up the initial continuous integration (CI) pipeline on the GitHub reposito
 
 2. Student s242540 was primarily responsible for creating docker images and setup cloud environment for training, deployment.
 
-I created all services in the cloud to set them up for our experimentation and deployment. I created trigger to Github to create Docker images automatically. I setup Vertex AI yaml files and quota arrangements. I deployed our model, frontend and backend to cloud also. To sum up, I did everything related to cloud work. 
+I created all services in the cloud to set them up for our experimentation and deployment. I created trigger to Github to create Docker images automatically. I setup Vertex AI yaml files and quota arrangements. I deployed our model, frontend and backend to cloud also. To sum up, I did everything related to cloud work.
