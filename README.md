@@ -12,6 +12,9 @@ The dataset used are the <a href="https://www.kaggle.com/datasets/gpiosenka/card
 ### Model/framework
 We are planning to use “Hugging Face Transformers” or “PyTorch Image Models (TIMM)” to access and work on pre-trained image classification models. We can also try to incorporate PyTorch Lightning to our workflow to minimize boilerplate code and make it more streamlined. We first plan to use a pre-trained ResNet model with appropriate size. However, we may experiment on Vision transformer (ViT), or ConvNeXt models.
 
+### Frontend
+Link to frontend: <a href="https://frontend-474989323251.europe-west1.run.app/">https://frontend-474989323251.europe-west1.run.app/</a>
+
 ___
 ## #TODO
 #### Checklist
@@ -32,7 +35,7 @@ ___
 * [x] (Mustafa) Build the docker files locally and make sure they work as intended (M10)
 * [x] (Sonny) Write one or multiple configurations files for your experiments (M11)
 * [x] (Sonny) Used Hydra to load the configurations and manage your hyperparameters (M11)
-* [ ] (özkan) Use profiling to optimize your code (M12)
+* [x] (özkan) Use profiling to optimize your code (M12)
 * [x] (Sonny) Use logging to log important events in your code (M14)
 * [x] (özkan) Use Weights & Biases to log training progress and other important metrics/artifacts in your code (M14)
 * [x] (özkan) Consider running a hyperparameter optimization sweep (M14)
@@ -53,15 +56,15 @@ ___
 * [x] (Mustafa) Get your model training in GCP using either the Engine or Vertex AI (M21)
 * [x] (Sonny) Create a FastAPI application that can do inference using your model (M22)
 * [x] (Sonny/özkan) Deploy your model in GCP using either Functions or Run as the backend (M23)
-* [ ] (Veroonika) Write API tests for your application and setup continues integration for these (M24)
+* [x] (Veroonika) Write API tests for your application and setup continues integration for these (M24)
 * [ ] - Load test your application (M24)
 * [x] (Sonny) Create a more specialized ML-deployment API using either ONNX or BentoML, or both (M25)
-* [ ] - Create a frontend for your API (M26)
+* [x] (Sonny) Create a frontend for your API (M26)
 
 #### Week 3
 * [ ] - Check how robust your model is towards data drifting (M27)
 * [ ] - Deploy to the cloud a drift detection API (M27)
-* [ ] (Sonny) Instrument your API with a couple of system metrics (M28)
+* [x] (Sonny) Instrument your API with a couple of system metrics (M28)
 * [ ] (Mustafa) Setup cloud monitoring of your instrumented application (M28)
 * [ ] (Mustafa) Create one or more alert systems in GCP to alert you if your app is not behaving correctly (M28)
 * [ ] - If applicable, optimize the performance of your data loading using distributed data loading (M29)
@@ -71,10 +74,10 @@ ___
 ### *Extra*
 * [ ] (*) Write some documentation for your application (M32)
 * [ ] Publish the documentation to GitHub Pages (M32)
-* [ ] Revisit your initial project description. Did the project turn out as you wanted?
-* [ ] Create an architectural diagram over your MLOps pipeline
-* [ ] Make sure all group members have an understanding about all parts of the project
-* [ ] Uploaded all your code to GitHub
+* [x] Revisit your initial project description. Did the project turn out as you wanted?
+* [x] Create an architectural diagram over your MLOps pipeline
+* [x] Make sure all group members have an understanding about all parts of the project
+* [x] Uploaded all your code to GitHub
 
 ## Project structure
 
