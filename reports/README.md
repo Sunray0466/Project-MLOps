@@ -155,13 +155,8 @@ Answer:35
 >
 > Recommended answer length: 100-200 words
 >
-> Example:
-> *We used ... for managing our dependencies. The list of dependencies was auto-generated using ... . To get a*
-> *complete copy of our development environment, one would have to run the following commands*
->
 > Answer:
-
---- question 4 fill here ---
+We managed dependencies in our project using a combination of a requirements.txt file and a pyproject.toml file. The requirements.txt lists all the exact package versions used, ensuring a reproducible environment. Meanwhile, the pyproject.toml file defines broader dependency specifications, including build system requirements. To replicate the environment, a new team member can create a virtual environment, then install the dependencies using pip install -r requirements.txt for precise versions or pip install . if they want to build the project as defined in the pyproject.toml. This ensures consistency across development, testing, and production environments.
 
 ### Question 5
 
@@ -258,13 +253,10 @@ Even with 100% code coverage, the code cannot be considered error-free. Code cov
 >
 > Recommended answer length: 100-200 words.
 >
-> Example:
-> *We did make use of DVC in the following way: ... . In the end it helped us in ... for controlling ... part of our*
-> *pipeline*
->
 > Answer:
+We used DVC in our project to manage data, but it didn’t significantly improve our workflow since our dataset was static and downloaded from Kaggle. DVC's main benefits, like tracking evolving datasets or maintaining different versions, weren’t applicable in our case.  
 
---- question 10 fill here ---
+However, DVC would be highly beneficial in scenarios involving dynamic datasets, such as when a team iteratively collects and preprocesses data. For example, in a machine learning project with continuously updated data (e.g. IoT sensor data), DVC enables efficient tracking of data changes. It creates a synchronization across team members, and reproducibility by linking data to specific model versions, ensuring consistency in experiments and deployments.
 
 ### Question 11
 
@@ -352,16 +344,14 @@ Link: https://github.com/Sunray0466/Project-MLOps/actions/runs/12956631076/job/3
 
 > **Docker is an important tool for creating containerized applications. Explain how you used docker in your**
 > **experiments/project? Include how you would run your docker images and include a link to one of your docker files.**
->
-> Recommended answer length: 100-200 words.
->
-> Example:
-> *For our project we developed several images: one for training, inference and deployment. For example to run the*
-> *training docker image: `docker run trainer:latest lr=1e-3 batch_size=64`. Link to docker file: <weblink>*
->
 > Answer:
+Docker played a crucial role in our project for both training and deployment of the backend and frontend components. For training, we created a Docker image that contained all the dependencies and configurations required to run our machine learning training script. We set up an entry point in the Dockerfile to ensure seamless execution within Vertex AI, where the image was used to execute training jobs.
 
---- question 15 fill here ---
+For deployment, we used Docker images to containerize both the backend (FastAPI) and frontend (Streamlit) implementations. These images were built and pushed to Artifact Registry, ensuring version control and easy access. We then deployed the images to Cloud Run using the gcloud run deploy command, enabling a scalable, serverless deployment environment.
+
+Here is a link to one of our Dockerfiles: https://github.com/Sunray0466/Project-MLOps/blob/main/dockerfiles/train.dockerfile. Docker allowed us to streamline workflows, ensuring consistency across local and cloud environments.
+
+
 
 ### Question 16
 
@@ -385,30 +375,21 @@ Link: https://github.com/Sunray0466/Project-MLOps/actions/runs/12956631076/job/3
 ### Question 17
 
 > **List all the GCP services that you made use of in your project and shortly explain what each service does?**
->
-> Recommended answer length: 50-200 words.
->
-> Example:
-> *We used the following two services: Engine and Bucket. Engine is used for... and Bucket is used for...*
->
 > Answer:
 
---- question 17 fill here ---
-
+In our project, we utilized several GCP services to streamline development and deployment. 
+Artifact Registry was used to store and manage container images, ensuring version control and seamless integration with other GCP tools
+Cloud Build automated our CI/CD pipelines, allowing us to efficiently build, test, and deploy containerized applications. 
+Also, we used Secret Manager to handle sensitive information securely and manage API keys and other credentials. 
+We have also used Vertex AI for training, managing, and deploying machine learning models at scale. 
+We stored our datasets and static files (model files) in Cloud Storage. 
+Finally, we deployed our containerized FastAPI and Streamlit implementations using Cloud Run, a serverless platform that automatically scaled based on demand.
 ### Question 18
 
 > **The backbone of GCP is the Compute engine. Explained how you made use of this service and what type of VMs**
 > **you used?**
->
-> Recommended answer length: 100-200 words.
->
-> Example:
-> *We used the compute engine to run our ... . We used instances with the following hardware: ... and we started the*
-> *using a custom container: ...*
->
 > Answer:
-
---- question 18 fill here ---
+We initially used GCP’s Compute Engine to run small sample Docker images, helping us get familiar with the commands and user interface. This gave us a foundational understanding of managing virtual machines (VMs) and running containerized applications. While we explored the Compute Engine’s capabilities, including GPU usage, we later shifted our focus to Vertex AI for running real machine learning experiments. Compute Engine provided flexibility and scalability, but Vertex AI proved to be more efficient for registering jobs and managing experimentation workflows. During our exploration, we utilized NVIDIA_TESLA_P4 GPUs paired with an n1-standard-8 machine type, which offered a balance of performance and cost for smaller tasks. Though we didn’t rely heavily on Compute Engine in our final workflows, it was instrumental in building our understanding of GCP infrastructure.
 
 ### Question 19
 
@@ -416,8 +397,8 @@ Link: https://github.com/Sunray0466/Project-MLOps/actions/runs/12956631076/job/3
 > **You can take inspiration from [this figure](figures/bucket.png).**
 >
 > Answer:
-
---- question 19 fill here ---
+[The overview of the all buckets](figures/overall_buckets.png)
+[Models folder and dataset](figures/model_folder.png)
 
 ### Question 20
 
@@ -425,8 +406,8 @@ Link: https://github.com/Sunray0466/Project-MLOps/actions/runs/12956631076/job/3
 > **stored. You can take inspiration from [this figure](figures/registry.png).**
 >
 > Answer:
-
---- question 20 fill here ---
+[Overview of the registry](figures/overall_registry.png)
+[Docker files for training purposes](figures/training_docker.png)
 
 ### Question 21
 
@@ -434,23 +415,19 @@ Link: https://github.com/Sunray0466/Project-MLOps/actions/runs/12956631076/job/3
 > **your project. You can take inspiration from [this figure](figures/build.png).**
 >
 > Answer:
-
---- question 21 fill here ---
+[Cloud Build History](figures/cloud_build.png)
+[Continued](figures/cloud_build_cont.png)
 
 ### Question 22
 
 > **Did you manage to train your model in the cloud using either the Engine or Vertex AI? If yes, explain how you did**
 > **it. If not, describe why.**
->
-> Recommended answer length: 100-200 words.
->
-> Example:
-> *We managed to train our model in the cloud using the Engine. We did this by ... . The reason we choose the Engine*
-> *was because ...*
->
 > Answer:
+Yes, we managed to train our model in the cloud using Vertex AI. Before transitioning to the cloud, we ensured everything worked correctly on our local setup. We integrated our GitHub repository with a trigger that automatically built a Docker image for our training script. To adapt the script for cloud training, we copied and modified another file specifically for this purpose. For secure access, we stored our credentials in Secret Manager, which we later integrated into the Vertex AI job.
 
---- question 22 fill here ---
+We created a YAML configuration file to submit the Vertex AI job and replaced environment variables with the secrets stored in Secret Manager during job creation. While the setup was efficient and streamlined, we encountered a challenge with GPU acceleration. When building GPU-accelerated Docker images, we faced dependency issues that we couldn’t resolve within our timeline. As a result, we opted to proceed with a CPU-based setup for the training job.
+
+Despite this limitation, Vertex AI allowed us to register jobs and run training experiments efficiently in the cloud. Than, we can successfully saved the trained model in the Cloud Storage.
 
 ## Deployment
 
@@ -489,13 +466,6 @@ Link: https://github.com/Sunray0466/Project-MLOps/actions/runs/12956631076/job/3
 
 > **Did you perform any unit testing and load testing of your API? If yes, explain how you did it and what results for**
 > **the load testing did you get. If not, explain how you would do it.**
->
-> Recommended answer length: 100-200 words.
->
-> Example:
-> *For unit testing we used ... and for load testing we used ... . The results of the load testing showed that ...*
-> *before the service crashed.*
->
 > Answer:
 
 For unit testing, we used pytest to test the FastAPI endpoints. We validated the root endpoint's response and tested the image classification endpoint by sending valid and invalid files. The valid test ensured the correct prediction and probabilities were returned, while the invalid test confirmed proper error handling for non-image files.
@@ -524,16 +494,10 @@ For load testing, we would use the Locust framework, which allows simulating man
 
 > **How many credits did you end up using during the project and what service was most expensive? In general what do**
 > **you think about working in the cloud?**
->
-> Recommended answer length: 100-200 words.
->
-> Example:
-> *Group member 1 used ..., Group member 2 used ..., in total ... credits was spend during development. The service*
-> *costing the most was ... due to ... . Working in the cloud was ...*
->
 > Answer:
+ We ended up with $42.82 in credits during the project. The most expensive parts of the project were training our model with Vertex AI and storing data in the cloud. Vertex AI costs were primarily due to running multiple experiments and managing job workflows, while cloud storage expenses arose from storing datasets and other resources needed for the project.
 
---- question 27 fill here ---
+Overall, working in the cloud was a seamless and exciting experience. The ability to easily configure and adjust services offered a high level of flexibility, allowing us to adapt to project requirements quickly. The scalability of cloud services made it convenient to handle resource-intensive tasks without worrying about hardware limitations. Additionally, the integration between GCP services significantly streamlined our workflow. While cost management is essential, especially for resource-heavy tasks, the benefits of efficiency, scalability, and ease of use made working in the cloud a worthwhile and enjoyable experience.
 
 ### Question 28
 
@@ -556,17 +520,16 @@ For load testing, we would use the Locust framework, which allows simulating man
 > **Include a figure that describes the overall architecture of your system and what services that you make use of.**
 > **You can take inspiration from [this figure](figures/overview.png). Additionally, in your own words, explain the**
 > **overall steps in figure.**
->
-> Recommended answer length: 200-400 words
->
-> Example:
->
-> *The starting point of the diagram is our local setup, where we integrated ... and ... and ... into our code.*
-> *Whenever we commit code and push to GitHub, it auto triggers ... and ... . From there the diagram shows ...*
->
 > Answer:
 
---- question 29 fill here ---
+[Overall Architecture](figures/mlops_diagram.png)
+
+We are beginning with development environment, where code changes are prepared and committed. Before each commit, pre-commit hooks ensure code quality and formatting. Once changes are pushed to GitHub, GitHub Actions are triggered to run automated tests, including tests for data.py, model.py, and API implementations, while also verifying code formatting with Ruff.
+Upon successful testing, Cloud Build automatically builds a Docker image of the latest codebase and stores it in Artifact Registry. This image serves as the foundation for deploying both training and serving workflows. Training jobs are triggered on Vertex AI, where the training script retrieves data from Cloud Storage and accesses credentials securely stored in Secret Manager. After training, the model is saved back to Cloud Storage for further use. The training process utilized CPU resources due to dependency issues encountered with GPU-accelerated Docker images.
+To manage hyperparameter tuning and logging, we used Weights & Biases (W&B) and Hydra, which is used for experimentation and configuration management. Meanwhile, DVC was configured for tracking data versioning within Cloud Storage.
+Once the model was trained, it was deployed to Cloud Run, a serverless platform that hosted both our FastAPI and Streamlit implementations for serving and interacting with the model. The ONNX format was used to make the model compatible for use on local machines when needed.
+
+Overall, we have used GCP’s scalability and integration while maintaining flexibility across the pipeline.
 
 ### Question 30
 
